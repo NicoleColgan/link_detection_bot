@@ -1,3 +1,38 @@
-# to do
-- do write up on concept so we can write proper readme- what its gunna do - what well be learning - details - nicole and oisin 
-- see if we can find any broken links on anything - any page, wiki etc, documents from emails, sharepoints
+# Project scope
+This project is a personal learning initiaive designed to explore technologies we already use. Its a link detection tool that scans documents or wikis for broken or out-dated linked with potential for real world value in documentation help and developer experience.
+
+The project aims to deepen out understanding of tools like Python CLI dev, React, Next.js, and LLMS while also exploring concepts like crawling, parsing, content comparison, similarity detection and ui design.
+
+It's developed entirely as a personal project, without the use of any confidential data. While the focus is on upskilling and mentorshop, there may be potential for future commercial integration if the tool proves useful.
+
+## details
+1. Input sources: lets start with files??
+2. Output: csv of broken links
+3. Initially flag just 404s?
+4. optional extras
+
+## TODO:
+
+## notes:
+- It should periodically crawling page (recursively eg follow a docs links link...)
+- Need to be able to easily plug in different websites/ docs or something somehow to make it a useful tool for a variety of purposes
+- AI Use: Detect semantic change (e.g., if firmware has been renamed or replaced) not just broken URLs.
+- We can use react/ next js to build a simple ui where you can insert a url to recursively check links
+- The tool automatically checks whether urls on a page are:
+    1. alive or dead
+    2. Have changed signifigantly over time
+    3. Flag suspicious or broken pages using intelligent comparison - slow responses
+- how do we give it something to check?? i think the product page itself shouldnt have any broken links so maybe we do something similar like we did in the poc and download files or just give it a list of files or links (in the case of wiki, i guess it would be a url but it also could be for the file to be fair so maybe a list of urls in a csv or something). Probably easier to start with explicit imput eg a directory with files in it or wikis etc then add crawling functionality later
+
+## broken links
+https://rndwiki-pro.its.hpecorp.net/display/sa20/Building+a+CoreService+in+GreenLake+from+scratch - goland-template linke
+https://mci-doc.glcp.hpedev.net/versions/v1.5.3/docs/glcp-developers/Managed-ci/on-boarding/index.html link on same page4
+https://github.com/glcp/Secret-Scan-Tool/blob/main/allowlist.yml link in same page
+
+product page
+Server memory population rules for HPE ProLiant Gen10 servers with AMD processors on this doc https://support.hpe.com/hpesc/public/docDisplay?docId=sd00002129en_us&docLocale=en_US
+
+## Future work
+- could consider crawling with dept limit
+- Integreation with llms to summarise content, suggest fixes
+- ui to upload files/ urls?
