@@ -12,6 +12,15 @@ It's developed entirely as a personal project, without the use of any confidenti
 4. optional extras
 
 ## TODO:
+### For next week
+- find more broke links (Oisin)
+- Create the base python script - just one main, init, whatever - base script with like fuck all in it that accepts command line arguments (Oisin)
+- Create a directory of documents
+- Reading in all the documents and checking the urls recursively (Nicole)
+- see if i can find that free sources yoke (Nicole)
+
+### Future
+- spit broken links to csv (Oisin or nicole - not sure)
 
 ## notes:
 - It should periodically crawling page (recursively eg follow a docs links link...)
@@ -28,3 +37,15 @@ It's developed entirely as a personal project, without the use of any confidenti
 - could consider crawling with dept limit
 - Integreation with llms to summarise content, suggest fixes
 - ui to upload files/ urls?
+
+## Oisins learning
+- cron jobs:
+- gitignore
+- Writing mds and read mes
+
+## Nicoles learnings
+
+```
+example code block
+
+```
