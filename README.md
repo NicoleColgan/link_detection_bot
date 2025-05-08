@@ -15,7 +15,8 @@ It's developed entirely as a personal project, without the use of any confidenti
 ### For next week
 - find more broke links (Oisin)
 - Create the base python script - just one main, init, whatever - base script with like fuck all in it that accepts command line arguments (Oisin)
-- Create a directory of documents
+- Update read me with your parts (oisin)
+- Create a directory of documents (Nicole)
 - Reading in all the documents and checking the urls recursively (Nicole)
 - see if i can find that free sources yoke (Nicole)
 
