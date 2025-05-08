@@ -24,14 +24,6 @@ It's developed entirely as a personal project, without the use of any confidenti
     3. Flag suspicious or broken pages using intelligent comparison - slow responses
 - how do we give it something to check?? i think the product page itself shouldnt have any broken links so maybe we do something similar like we did in the poc and download files or just give it a list of files or links (in the case of wiki, i guess it would be a url but it also could be for the file to be fair so maybe a list of urls in a csv or something). Probably easier to start with explicit imput eg a directory with files in it or wikis etc then add crawling functionality later
 
-## broken links
-https://rndwiki-pro.its.hpecorp.net/display/sa20/Building+a+CoreService+in+GreenLake+from+scratch - goland-template linke
-https://mci-doc.glcp.hpedev.net/versions/v1.5.3/docs/glcp-developers/Managed-ci/on-boarding/index.html link on same page4
-https://github.com/glcp/Secret-Scan-Tool/blob/main/allowlist.yml link in same page
-
-product page
-Server memory population rules for HPE ProLiant Gen10 servers with AMD processors on this doc https://support.hpe.com/hpesc/public/docDisplay?docId=sd00002129en_us&docLocale=en_US
-
 ## Future work
 - could consider crawling with dept limit
 - Integreation with llms to summarise content, suggest fixes
