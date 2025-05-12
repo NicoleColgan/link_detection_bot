@@ -21,6 +21,7 @@ It's developed entirely as a personal project, without the use of any confidenti
 
 ### Future
 - spit broken links to csv (Oisin or nicole - not sure)
+- Check not only if theyre 404s but if the link exists period
 
 ## notes:
 - It should periodically crawling page (recursively eg follow a docs links link...)
@@ -47,4 +48,7 @@ It's developed entirely as a personal project, without the use of any confidenti
 ## Nicoles learnings
 1. to force a 404 return - go to an existing website then to a path that doesnt exist eg google.com/404
 2. How to do strike through on md file
+3. Specify utf-8 encoding to ensures python reads the file using the correct translation for the bytes inside the file. This ensures we get the actual characters we expect.
+4. regular expressions - mentioned in comment
+5. extend metod add elements from another list or iterable to an array (like i did iterating through a file)
 
