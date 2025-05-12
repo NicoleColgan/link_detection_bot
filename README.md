@@ -17,7 +17,7 @@ It's developed entirely as a personal project, without the use of any confidenti
 - Create the base python script - just one main, init, whatever - base script with like fuck all in it that accepts command line arguments (Oisin)
 - Update read me with your parts (oisin)
 - ~~Create a directory of documents~~ (Nicole)
-- Reading in all the documents and checking the urls recursively (Nicole)
+- Reading in all the documents and checking the urls on the current page are good or not and print to csvs (Nicole)
 
 ### Future
 - spit broken links to csv (Oisin or nicole - not sure)
@@ -39,6 +39,7 @@ It's developed entirely as a personal project, without the use of any confidenti
 - Integreation with llms to summarise content, suggest fixes
 - ui to upload files/ urls?
 - What file formats to consider
+- Just realised we cant do the whoel recursive search yet if were using documents (unless we download a document fromn the url and repeat the process). This is more so viable if were using urls to search through pages.
 
 ## Oisins learning
 - cron jobs:
