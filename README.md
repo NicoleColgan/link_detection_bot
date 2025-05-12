@@ -1,9 +1,9 @@
 # Project scope
 This project is a personal learning initiaive designed to explore technologies we already use. Its a link detection tool that scans documents or wikis for broken or out-dated linked with potential for real world value in documentation help and developer experience.
 
-The project aims to deepen out understanding of tools like Python CLI dev, React, Next.js, and LLMS while also exploring concepts like crawling, parsing, content comparison, similarity detection and ui design.
+The project aims to deepen our understanding of tools like Python CLI dev, React, Next.js, and LLMS while also exploring concepts like crawling, parsing, content comparison, similarity detection and ui design.
 
-It's developed entirely as a personal project, without the use of any confidential data. While the focus is on upskilling and mentorshop, there may be potential for future commercial integration if the tool proves useful.
+This project is an opportunity to sharpen our skills across multiple areas of development, without the use of any confidential data. While the focus is on upskilling and mentorship, there may be potential for future commercial integration if the tool proves useful.
 
 ## details
 1. Input sources: lets start with files??
