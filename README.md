@@ -14,8 +14,8 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 ## TODO:
 ### For next week
 - find more broke links (Oisin)
-- Create the base python script - just one main, init, whatever - base script with like fuck all in it that accepts command line arguments (Oisin)
-- Update read me with your parts (oisin)
+- ~~Create the base python script - just one main, init, whatever~~ - base script with like fuck all in it that accepts command line arguments (Oisin)
+- ~~Update read me with your parts~~ (oisin)
 - ~~Create a directory of documents~~ (Nicole)
 - Reading in all the documents and checking the urls recursively (Nicole)
 
@@ -40,9 +40,12 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 - What file formats to consider
 
 ## Oisins learning
+1. used a gitignore for the first time to hide stuff from the version control
+2. Python - don't have much experience at all with language but learnt how to write a simple script with it
+3. Md- this is my first time writing/using markdown
 - cron jobs:
-- gitignore
-- Writing mds and read mes
+
+
 
 ## Nicoles learnings
 1. to force a 404 return - go to an existing website then to a path that doesnt exist eg google.com/404
