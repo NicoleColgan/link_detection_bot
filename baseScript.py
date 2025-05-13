@@ -1,22 +1,39 @@
 
 
 import argparse
+import sys
 
- # basic function that prints out whatever the user inputs on the command line back to them
-def main():
+ # basic script that prints out whatever the user inputs on the command line back to them
+class Main():
 
-    # handles parsing command line arguments
-    parser = argparse.ArgumentParser( 
+     def __init__(self, args):
+       self.args= args
+       
+
+     def retrieve_input(self):
+     # handles parsing command line arguments
+        parser = argparse.ArgumentParser( 
         description="takes in a command line argument"
-    )
+        )
 
-    parser.add_argument("input", help="input file or value") #what arguments the script expects
+        parser.add_argument("input", help="input file or value") #what arguments the script expects
 
 
-    args = parser.parse_args()
+        self.args = parser.parse_args()
 
-    print(f"You've entered: {args.input}") #prints out the input for now, obvioulsy will change later
+        print(f"You've entered: {self.args.input}") #prints out the input for now, obviously this will change later
+    
+    
+     def run(self):
+        self.retrieve_input()
+        
+        
+        
 
- 
+def main(args):
+   app = Main(args)
+   app.run()
+
+
 if __name__ == "__main__":
- main()
+    main(sys.argv[1:])
