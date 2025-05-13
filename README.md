@@ -1,9 +1,9 @@
 # Project scope
-This project is a personal learning initiaive designed to explore technologies we already use. Its a link detection tool that scans documents or wikis for broken or out-dated linked with potential for real world value in documentation help and developer experience.
+This project is a personal learning initiaive designed to explore technologies we already use. We are setting out to build a Link Validation & Dead Link Detection Bot: an intelligent system that automatically crawls a set of pages, checks for broken or outdated links, and stores a historical log of what has changed and when.
 
-The project aims to deepen out understanding of tools like Python CLI dev, React, Next.js, and LLMS while also exploring concepts like crawling, parsing, content comparison, similarity detection and ui design.
+The project aims to deepen our understanding of tools like Python CLI dev, React, Next.js, and LLMS while also exploring concepts like crawling, parsing, content comparison, similarity detection and ui design. There is the added benefit of designing a project that meaningfully sharpens our technical skills, reinforces best practices, and creates something useful that we could also maintain and showcase independently.
 
-It's developed entirely as a personal project, without the use of any confidential data. While the focus is on upskilling and mentorshop, there may be potential for future commercial integration if the tool proves useful.
+This side-project is an opportunity to hone our skills across multiple areas of development, without the use of any confidential data. While the focus is on upskilling and mentorship, there may be potential for future commercial integration if the tool proves useful.
 
 ## details
 1. Input sources: lets start with files??
@@ -14,8 +14,8 @@ It's developed entirely as a personal project, without the use of any confidenti
 ## TODO:
 ### For next week
 - find more broke links (Oisin)
-- Create the base python script - just one main, init, whatever - base script with like fuck all in it that accepts command line arguments (Oisin)
-- Update read me with your parts (oisin)
+- ~~Create the base python script - just one main, init, whatever~~ - base script with like fuck all in it that accepts command line arguments (Oisin)
+- ~~Update read me with your parts~~ (oisin)
 - ~~Create a directory of documents~~ (Nicole)
 - Reading in all the documents and checking the urls recursively (Nicole)
 
@@ -40,9 +40,12 @@ It's developed entirely as a personal project, without the use of any confidenti
 - What file formats to consider
 
 ## Oisins learning
+1. used a gitignore for the first time to hide stuff from the version control
+2. Python - don't have much experience at all with language but learnt how to write a simple script with it
+3. Md- this is my first time writing/using markdown
 - cron jobs:
-- gitignore
-- Writing mds and read mes
+
+
 
 ## Nicoles learnings
 1. to force a 404 return - go to an existing website then to a path that doesnt exist eg google.com/404
