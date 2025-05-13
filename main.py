@@ -1,11 +1,7 @@
-# todo 
-# validation of document directory
-# Input parameters from user
 import os   # To acces files and folders
 import re   # To find URLS using patterns
 import fitz # Reads pdf files (comes from PyMuPDF)
-
-
+import requests # Check if a url works
 
 def extract_urls(content):
     # r = raw string (treat backslashes as literal character not escape characters)
@@ -30,6 +26,16 @@ def read_pdf_file(filepath):
             urls.extend(extract_urls(content))
     return urls
 
+def check_url(url):
+    try:
+        # Get headers, follow redirects, wait 5s
+        response = requests.head(url, allow_redirects=True, timeout=5)
+        return response.status_code
+    except:
+        # Unreachable, broken, url malformed, site down etc.,
+        return "Error"
+
+# Use a set to filter out duplicates
 found_urls = set()
 folderpath="documents"
 # Go through every file in the folder
@@ -41,3 +47,13 @@ for filename in os.listdir(folderpath):
         urls = read_text_file(filepath)
     elif filename.endswith('.pdf'):
         urls = read_pdf_file(filepath)
+    else:
+        print(f"{filename} skipped - only accepts .md, .pdf, and .html files")
+    
+    found_urls.update(urls)
+
+print("Checking URLs...\n")
+# sorting them for clarity and debugginh
+for url in sorted(found_urls):
+    status = check_url(url)
+    print(f"URL: {url}  ->  response:{status}\n\n")

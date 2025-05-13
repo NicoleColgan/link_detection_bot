@@ -35,6 +35,7 @@ It's developed entirely as a personal project, without the use of any confidenti
 - how do we give it something to check?? i think the product page itself shouldnt have any broken links so maybe we do something similar like we did in the poc and download files or just give it a list of files or links (in the case of wiki, i guess it would be a url but it also could be for the file to be fair so maybe a list of urls in a csv or something). Probably easier to start with explicit imput eg a directory with files in it or wikis etc then add crawling functionality later
 
 ## Future work
+- Add input parameters (parsers) and input validation eg valid document directory
 - could consider crawling with dept limit
 - Integreation with llms to summarise content, suggest fixes
 - ui to upload files/ urls?
@@ -52,4 +53,6 @@ It's developed entirely as a personal project, without the use of any confidenti
 3. Specify utf-8 encoding to ensures python reads the file using the correct translation for the bytes inside the file. This ensures we get the actual characters we expect.
 4. regular expressions - mentioned in comment
 5. extend metod add elements from another list or iterable to an array (like i did iterating through a file)
-
+6. A set is a collection of unique items which doesnt have duplicates, is unordered, is fast to check if an item exists. I used a set for the found urls to filter out duplicates to make sure each url is only checked once
+7. ```response = requests.head(url, allow_redirects=True, timeout=5)``` 
+A HEAD request is like a GET but it only asks for headers not full content (all thats neccesary to check status code). allowing redirects follows redirects in case page has moved to new location. Add a timeout to wait before giving up.
