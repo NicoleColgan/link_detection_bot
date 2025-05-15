@@ -13,15 +13,25 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 
 ## TODO:
 ### For next week
+- update txt file and send to nicole (Oisin)
+- Input validtion on documents (Oisin)
+- csv - document, url, statuscode, runTime, runName, working - pk: url, do we need doc table?? (Oisin)
+- think aqbout other fields for csv (Nicole & Oisin)
+- retrying it fails onece (Nicole)
+- What other things to check in url - dif error codes etc., eg page not found, network error etc (Nicole)
+- ~~Merge our changes~~ (Nicole)
+
+## Done to date
 - find more broke links (Oisin)
-- ~~Create the base python script - just one main, init, whatever~~ - base script with like fuck all in it that accepts command line arguments (Oisin)
-- ~~Update read me with your parts~~ (oisin)
-- ~~Create a directory of documents~~ (Nicole)
-- Reading in all the documents and checking the urls on the current page are good or not and print to csvs (Nicole)
+- Create the base python script - just one main, init, whatever - base script with like fuck all in it that accepts command line arguments (Oisin)
+- Update read me with your parts (oisin)
+- Create a directory of documents (Nicole)
+- Reading in all the documents and checking the urls on the current page are good or not (Nicole)
 
 ### Future
 - spit broken links to csv (Oisin or nicole - not sure)
 - Check not only if theyre 404s but if the link exists period
+- doc tavble - last updated
 
 ## notes:
 - It should periodically crawling page (recursively eg follow a docs links link...)
@@ -41,6 +51,7 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 - ui to upload files/ urls?
 - What file formats to consider
 - Just realised we cant do the whoel recursive search yet if were using documents (unless we download a document fromn the url and repeat the process). This is more so viable if were using urls to search through pages.
+- spit into a db
 
 ## Oisins learning
 1. used a gitignore for the first time to hide stuff from the version control
@@ -57,4 +68,4 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 6. A set is a collection of unique items which doesnt have duplicates, is unordered, is fast to check if an item exists. I used a set for the found urls to filter out duplicates to make sure each url is only checked once
 7. ```response = requests.head(url, allow_redirects=True, timeout=5)``` 
 A HEAD request is like a GET but it only asks for headers not full content (all thats neccesary to check status code). allowing redirects follows redirects in case page has moved to new location. Add a timeout to wait before giving up.
-- 
+- if method doesnt use class variables make it static and call it like ClassName.methodName
