@@ -48,8 +48,6 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 3. Md- this is my first time writing/using markdown
 - cron jobs:
 
-
-
 ## Nicoles learnings
 1. to force a 404 return - go to an existing website then to a path that doesnt exist eg google.com/404
 2. How to do strike through on md file
@@ -59,3 +57,4 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 6. A set is a collection of unique items which doesnt have duplicates, is unordered, is fast to check if an item exists. I used a set for the found urls to filter out duplicates to make sure each url is only checked once
 7. ```response = requests.head(url, allow_redirects=True, timeout=5)``` 
 A HEAD request is like a GET but it only asks for headers not full content (all thats neccesary to check status code). allowing redirects follows redirects in case page has moved to new location. Add a timeout to wait before giving up.
+- 
