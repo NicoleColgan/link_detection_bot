@@ -14,7 +14,7 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 ## TODO:
 ### For next week
 - update txt file and send to nicole (Oisin)
-- Input validtion on documents (Oisin)
+- update code to accept user input of document & input validation of directorys(Oisin)
 - csv - document, url, statuscode, runTime, runName, working - pk: url, do we need doc table?? (Oisin)
 - think aqbout other fields for csv (Nicole & Oisin)
 - retrying it fails onece (Nicole)
