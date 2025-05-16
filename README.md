@@ -69,3 +69,4 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 7. ```response = requests.head(url, allow_redirects=True, timeout=5)``` 
 A HEAD request is like a GET but it only asks for headers not full content (all thats neccesary to check status code). allowing redirects follows redirects in case page has moved to new location. Add a timeout to wait before giving up.
 - if method doesnt use class variables make it static and call it like ClassName.methodName
+- If you create a branch from main then merge something else into main, your brch doesnt automatically get those changes but if you do  git merge main that merges mains changes into your branch then creates commit so you need to push this commit to your repo
