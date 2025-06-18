@@ -4,11 +4,30 @@ import fitz # Reads pdf files (comes from PyMuPDF)
 import requests # Check if a url works
 import argparse
 import sys
+import time
 
 class Main():
+    STATUS_MEANINGS = {
+        200: "OK",
+        301: "Permanantely Moved",
+        302: "Found (Redirect)",
+        403: "Forbidden",
+        404: "Not Found",
+        500: "Internal Server Error",
+        502: "Bad Gateway",
+        503: "Service Unavailable",
+        "Error": "Unreachable or Timed Out"
+    }
 
     def __init__(self, args):
        self.args= args
+    
+    def explain_status(self, code):
+        return self.STATUS_MEANINGS.get(code)
+    
+    @staticmethod
+    def is_link_ok(code):
+        return code in [200, 301, 302]
 
     @staticmethod
     def extract_urls(content):
@@ -42,9 +61,16 @@ class Main():
             # Get headers, follow redirects, wait 5s
             response = requests.head(url, allow_redirects=True, timeout=5)
             return response.status_code
-        except:
-            # Unreachable, broken, url malformed, site down etc.,
-            return "Error"
+        except Exception:
+            # Try once more but wait one second
+            print(f"{url} → 🔁 Retrying once...")
+            time.sleep(1)
+            try:
+                response = requests.head(url, allow_redirects=True, timeout=5)
+                return response.status_code
+            except Exception:
+                # Unreachable, broken, url malformed, site down etc.,
+                return "Error"
 
     def check_urls(self):
         # Use a set to filter out duplicates
@@ -71,10 +97,17 @@ class Main():
             found_urls.update(urls)
 
         print("Checking URLs...\n")
-        # sorting them for clarity and debugginh
+        # sorting them for clarity and debugging
+        results=[]
         for url in sorted(found_urls):
             status = Main.get_response(url)
-            print(f"URL: {url}  ->  response:{status}\n\n")
+            results.append({
+                "url": url,
+                "status_code": status,
+                "status_code_meaning": self.explain_status(status),
+                "reachable": "yes" if Main.is_link_ok(status) else "No"
+            })
+        print(f"{results}\n")
 
     def validate_input(self):
         # handles parsing command line arguments
