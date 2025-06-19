@@ -83,13 +83,22 @@ class Main():
         )
 
         parser.add_argument("input", help="input file or value") #what arguments the script expects
-
-
         self.args = parser.parse_args()
 
-        print(f"You've entered: {self.args.input}") #prints out the input for now, obviously this will change later
+        path = self.args.input
 
-        #   validate input
+
+        if not os.path.exists(path):
+            print(f"Error: The path '{path}' does not exist.")
+            sys.exit(1)
+
+        if not (os.path.isfile(path) or os.path.isdir(path)):
+            print(f"Error: The path '{path}' is neither a file nor a directory.")
+            sys.exit(1)    
+
+        print(f"Validated input path: {path}")
+
+      
 
 
     def run(self):
