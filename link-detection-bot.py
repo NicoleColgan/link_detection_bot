@@ -5,6 +5,7 @@ import requests # Check if a url works
 import argparse
 import sys
 import time
+from urllib.parse import urlparse, urlunparse
 
 class Main():
     STATUS_MEANINGS = {
@@ -30,6 +31,12 @@ class Main():
         return code in [200, 301, 302]
 
     @staticmethod
+    def normalise_url(url):
+        parsed = urlparse(url.strip())  #strip() removes whitespace and urlparse() seperates it into url parts
+        stripped = parsed._replace(fragment="", query=parsed.query.strip()) #remove fragment(specific section of page pointing to) & strip whitespafce from query
+        return urlunparse(stripped).rstrip('/') #rebuild url after cleaning and remove trailing slash
+    
+    @staticmethod
     def extract_urls(content):
         # r = raw string (treat backslashes as literal character not escape characters)
         # https? = match http literally with an optional s (s?) + '://' = matches https:// or http://
@@ -54,23 +61,31 @@ class Main():
                 content = page.get_text()
                 urls.extend(Main.extract_urls(content))
         return urls
+    
+    @staticmethod
+    def check_redirects(url, response):
+        final_url = response.url
+        redirect_chain = [r.url for r in response.history]
+        was_redirected = url != final_url
+        return was_redirected, final_url, redirect_chain
 
     @staticmethod
     def get_response(url):
-        try:
-            # Get headers, follow redirects, wait 5s
-            response = requests.head(url, allow_redirects=True, timeout=5)
-            return response.status_code
-        except Exception:
-            # Try once more but wait one second
-            print(f"{url} → 🔁 Retrying once...")
-            time.sleep(1)
+        url = Main.normalise_url(url)
+        for attempt in range(2):
             try:
+                # Get headers, follow redirects, wait 5s
                 response = requests.head(url, allow_redirects=True, timeout=5)
-                return response.status_code
+                was_redirected, final_url, redirect_chain = Main.check_redirects(url, response)
+                return response.status_code, was_redirected, final_url, redirect_chain
             except Exception:
-                # Unreachable, broken, url malformed, site down etc.,
-                return "Error"
+                # Try once more but wait one second
+                if attempt == 0:
+                    print(f"{url} → 🔁 Retrying once...")
+                    time.sleep(1)
+                else:
+                    # Unreachable, broken, url malformed, site down etc.,
+                    return "Error", "Error", "Error", "Error"
 
     def check_urls(self):
         # Use a set to filter out duplicates
@@ -93,19 +108,23 @@ class Main():
                 urls = Main.read_pdf_file(filepath)
             else:
                 print(f"{filename} skipped - only accepts .md, .pdf, and .html files")
-            
-            found_urls.update(urls)
+            # only add urls if some were found
+            if urls:
+                found_urls.update(urls)
 
         print("Checking URLs...\n")
         # sorting them for clarity and debugging
         results=[]
         for url in sorted(found_urls):
-            status = Main.get_response(url)
+            status, was_redirected, final_url, redirect_chain = Main.get_response(url)
             results.append({
                 "url": url,
                 "status_code": status,
                 "status_code_meaning": self.explain_status(status),
-                "reachable": "yes" if Main.is_link_ok(status) else "No"
+                "reachable": "yes" if Main.is_link_ok(status) else "No",
+                "redirected": was_redirected,
+                "final_url": final_url,
+                "redirect_chain": redirect_chain
             })
         print(f"{results}\n")
 

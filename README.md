@@ -34,6 +34,7 @@ This side-project is an opportunity to hone our skills across multiple areas of 
     - Rate limits or bot detection
     - Caching and expiry
 - ~~Merge our changes~~ (Nicole)
+- currently working on normalising url and returning chain but it doesnt work
 
 ## Done to date
 - find more broke links (Oisin)
@@ -85,3 +86,11 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 A HEAD request is like a GET but it only asks for headers not full content (all thats neccesary to check status code). allowing redirects follows redirects in case page has moved to new location. Add a timeout to wait before giving up.
 8. if method doesnt use class variables make it static and call it like ClassName.methodName
 9. If you create a branch from main then merge something else into main, your brch doesnt automatically get those changes but if you do  git merge main that merges mains changes into your branch then creates commit so you need to push this commit to your repo
+10. Different error codes and their meanings
+11. Its important to check redirects because:
+    - shortened links often redirect to final destination and when validating links its imoprtant to store final url
+    - seo/content content audits (link may have permanantely moved and lots of redirects is bad for seo)
+    - security because it could be redirecting to suspicious pages
+12. ```parsed = urlparse(url.strip())``` strip() removes whitespace and urlparse() seperates it into url parts
+13. the fragment is the part after the '#' in a url which points to a specific part of th page
+14. ```urlunparse(stripped).rstrip('/')``` rebuild url after cleaning
