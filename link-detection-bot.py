@@ -49,6 +49,18 @@ class Main():
             # Unreachable, broken, url malformed, site down etc.,
             return "Error"
 
+
+    @staticmethod
+    def is_valid_file(path):
+        """Checks if a given file exists"""
+        if not os.path.isfile(path):
+            print(f'Error: "{path}" is not a valid file')
+            sys.exit(1)
+        else: 
+            print(f'"{path}" is a valid file')
+        return path
+
+
     def check_urls(self):
         # Use a set to filter out duplicates
         found_urls = set()
@@ -101,7 +113,7 @@ class Main():
             for row in self.results:
                 writer.writerow(row)
         print(f"\nCSV report generated: {filename}")
-        
+
 
     def validate_input(self):
         # handles parsing command line arguments
@@ -109,21 +121,10 @@ class Main():
         description="takes in a command line argument"
         )
 
-        parser.add_argument("input", help="input file or value") #what arguments the script expects
+        parser.add_argument('-i', '--input', metavar='input', type=self.is_valid_file, help='File name of input', required=True)
         self.args = parser.parse_args()
 
-        path = self.args.input
-
-
-        if not os.path.exists(path):
-            print(f"Error: The path '{path}' does not exist.")
-            sys.exit(1)
-
-        if not (os.path.isfile(path) or os.path.isdir(path)):
-            print(f"Error: The path '{path}' is neither a file nor a directory.")
-            sys.exit(1)    
-
-        print(f"Validated input path: {path}")
+        print(f"Validated input path: {self.args.input }")
 
       
 
