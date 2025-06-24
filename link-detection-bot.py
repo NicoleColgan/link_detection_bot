@@ -51,14 +51,17 @@ class Main():
 
 
     @staticmethod
-    def is_valid_file(path):
-        """Checks if a given file exists"""
-        if not os.path.isfile(path):
-            print(f'Error: "{path}" is not a valid file')
+    def is_valid_directory(path):
+
+        if not os.path.isdir(path):
+            print(f'Error: "{path}" is not a valid directory')
             sys.exit(1)
-        else: 
-            print(f'"{path}" is a valid file')
-        return path
+        elif not any(os.path.isfile(os.path.join(path, f)) for f in os.listdir(path)):
+            print(f'Error: "{path}" is a directory but contains no files')
+            sys.exit(1)
+        else:
+            print(f'"{path}" is a valid directory with files')
+            return path
 
 
     def check_urls(self):
@@ -121,7 +124,7 @@ class Main():
         description="takes in a command line argument"
         )
 
-        parser.add_argument('-i', '--input', metavar='input', type=self.is_valid_file, help='File name of input', required=True)
+        parser.add_argument('-i', '--input', metavar='input', type=self.is_valid_directory, help='File name of input', required=True)
         self.args = parser.parse_args()
 
         print(f"Validated input path: {self.args.input }")
