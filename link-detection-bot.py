@@ -147,7 +147,7 @@ class Main():
                 "redirect_chain": redirect_chain,
                 'checked_at': datetime.now().isoformat()
             })
-            print(f"{self.results[-1]}\n")
+            #print(f"{self.results[-1]}\n")
 
         self.write_csv()
 

@@ -1,0 +1,21 @@
+url,status_code,status_code_meaning,reachable,redirected,final_url,redirect_chain,checked_at
+https://calendar.google.com/calendar,200,OK,yes,False,https://calendar.google.com/calendar,[],2025-06-26T18:00:26.041053
+https://calendar.google.com/calendar/u/0/404,200,OK,yes,False,https://calendar.google.com/calendar/u/0/404,[],2025-06-26T18:00:26.091461
+https://example.com/page?query=2#/,404,Not Found,No,False,https://example.com/page?query=2,[],2025-06-26T18:00:26.644155
+https://github.com,200,OK,yes,True,https://github.com/,[],2025-06-26T18:00:26.757670
+https://google.com,200,OK,yes,True,https://www.google.com/,['https://google.com/'],2025-06-26T18:00:26.864753
+https://google.com/404,404,Not Found,No,False,https://google.com/404,[],2025-06-26T18:00:27.010830
+https://translate.google.com/,200,OK,yes,True,https://translate.google.com/,[],2025-06-26T18:00:27.266742
+https://translate.google.com/%20404,404,Not Found,No,False,https://translate.google.com/%20404,[],2025-06-26T18:00:27.396114
+https://translate.google.com/404,404,Not Found,No,False,https://translate.google.com/404,[],2025-06-26T18:00:27.529933
+https://www.example.com/404,404,Not Found,No,False,https://www.example.com/404,[],2025-06-26T18:00:28.192388
+https://www.github.com/thispagedoesnotexist,404,Not Found,No,True,https://github.com/thispagedoesnotexist,['https://www.github.com/thispagedoesnotexist'],2025-06-26T18:00:28.428328
+https://www.google.com,200,OK,yes,True,https://www.google.com/,[],2025-06-26T18:00:28.475166
+https://www.google.com/404,404,Not Found,No,False,https://www.google.com/404,[],2025-06-26T18:00:28.608877
+https://www.google.com/search#about,200,OK,yes,False,https://www.google.com/search,[],2025-06-26T18:00:28.642679
+https://www.nonexistentwebsite12345.com,Error,Unreachable or Timed Out,No,Error,Error,Error,2025-06-26T18:00:29.660166
+https://www.openai.com,403,Forbidden,No,True,https://www.openai.com/,[],2025-06-26T18:00:29.775875
+https://www.python.org,200,OK,yes,True,https://www.python.org/,[],2025-06-26T18:00:29.813320
+https://www.wikipedia.org,200,OK,yes,True,https://www.wikipedia.org/,[],2025-06-26T18:00:29.894809
+https://www.youtube.com/,200,OK,yes,True,https://www.youtube.com/,[],2025-06-26T18:00:30.161440
+https://www.youtube.com/404,404,Not Found,No,False,https://www.youtube.com/404,[],2025-06-26T18:00:30.198931
