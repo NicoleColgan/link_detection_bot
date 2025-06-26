@@ -1,3 +1,5 @@
+import csv
+from datetime import datetime
 import os   # To acces files and folders
 import re   # To find URLS using patterns
 import fitz # Reads pdf files (comes from PyMuPDF)
@@ -22,7 +24,8 @@ class Main():
 
     def __init__(self, args):
        self.args= args
-    
+       self.results = []
+
     def explain_status(self, code):
         return self.STATUS_MEANINGS.get(code)
     
@@ -87,16 +90,33 @@ class Main():
                     # Unreachable, broken, url malformed, site down etc.,
                     return "Error", "Error", "Error", "Error"
 
+    @staticmethod
+    def is_valid_directory(path):
+
+        if not os.path.isdir(path):
+            print(f'Error: "{path}" is not a valid directory')
+            sys.exit(1)
+        elif not any(os.path.isfile(os.path.join(path, f)) for f in os.listdir(path)):
+            print(f'Error: "{path}" is a directory but contains no files')
+            sys.exit(1)
+        else:
+            print(f'"{path}" is a valid directory with files')
+            return path
+       
+    def write_csv(self):
+        filename = f"url_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+            fieldnames = ['url', 'status_code', 'status_code_meaning', 'reachable', 'redirected', 'final_url', 'redirect_chain', 'checked_at']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in self.results:
+                writer.writerow(row)
+        print(f"\nCSV report generated: {filename}")
+
     def check_urls(self):
         # Use a set to filter out duplicates
         found_urls = set()
-
-        # Change to be arguments
-        ##################################################
-
-
-        ################################################
-        folderpath = "documents"
+        folderpath = self.args.input
         # Go through every file in the folder
         for filename in os.listdir(folderpath):
             filepath = os.path.join(folderpath, filename)
@@ -113,20 +133,23 @@ class Main():
                 found_urls.update(urls)
 
         print("Checking URLs...\n")
+
         # sorting them for clarity and debugging
-        results=[]
         for url in sorted(found_urls):
             status, was_redirected, final_url, redirect_chain = Main.get_response(url)
-            results.append({
+            self.results.append({
                 "url": url,
                 "status_code": status,
                 "status_code_meaning": self.explain_status(status),
                 "reachable": "yes" if Main.is_link_ok(status) else "No",
                 "redirected": was_redirected,
                 "final_url": final_url,
-                "redirect_chain": redirect_chain
+                "redirect_chain": redirect_chain,
+                'checked_at': datetime.now().isoformat()
             })
-            print(f"{results[-1]}\n")
+            print(f"{self.results[-1]}\n")
+
+        self.write_csv()
 
     def validate_input(self):
         # handles parsing command line arguments
@@ -134,15 +157,10 @@ class Main():
         description="takes in a command line argument"
         )
 
-        parser.add_argument("input", help="input file or value") #what arguments the script expects
-
-
+        parser.add_argument('-i', '--input', metavar='input', type=self.is_valid_directory, help='File name of input', required=True)
         self.args = parser.parse_args()
 
-        print(f"You've entered: {self.args.input}") #prints out the input for now, obviously this will change later
-
-        #   validate input
-
+        print(f"Validated input path: {self.args.input }")
 
     def run(self):
         self.validate_input()
@@ -151,7 +169,6 @@ class Main():
 def main(args):
    app = Main(args)
    app.run()
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])

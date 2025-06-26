@@ -76,6 +76,8 @@ python link-detection-bot.py "documents"
 1. used a gitignore for the first time to hide stuff from the version control
 2. Python - don't have much experience at all with language but learnt how to write a simple script with it
 3. Md- this is my first time writing/using markdown
+4. Csv - learnt how to create csv files
+5. Using clean input validation when adding arguments to the parser
 - cron jobs:
 
 ## Nicoles learnings
