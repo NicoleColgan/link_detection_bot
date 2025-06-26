@@ -33,7 +33,7 @@ class Main():
     @staticmethod
     def normalise_url(url):
         parsed = urlparse(url.strip())  #strip() removes whitespace and urlparse() seperates it into url parts
-        stripped = parsed._replace(fragment="", query=parsed.query.strip()) #remove fragment(specific section of page pointing to) & strip whitespafce from query
+        stripped = parsed._replace(fragment="", query=parsed.query.strip()) #remove fragment(specific section of page pointing to) & strip whitespace from query
         return urlunparse(stripped).rstrip('/') #rebuild url after cleaning and remove trailing slash
     
     @staticmethod
@@ -126,7 +126,7 @@ class Main():
                 "final_url": final_url,
                 "redirect_chain": redirect_chain
             })
-        print(f"{results}\n")
+            print(f"{results[-1]}\n")
 
     def validate_input(self):
         # handles parsing command line arguments
