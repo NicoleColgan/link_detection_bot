@@ -11,37 +11,40 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 3. Initially flag just 404s?
 4. optional extras
 
+## How to run
+```
+python link-detection-bot.py "documents"
+```
+
 ## TODO:
 ### For next week
-- update txt file and send to nicole (Oisin)
-- update code to accept user input of document & input validation of directorys(Oisin)
-- csv - document, url, statuscode, explanation of code/error?, runTime, runName, working - pk: url, do we need doc table?? (Oisin)
-- think aqbout other fields for csv (Oisin)
-- think aqbout other fields for csv (Nicole)
-- ~~retrying it fails onece~~ (Nicole)
-- What other things to check in url - dif error codes etc., eg page not found, network error etc (Nicole)
-    - ~~error codes~~
-    - ~~Error code meanings~~
-    - ~~reachability~~
-    - timeouts/ retried
-    - was it redirected?
-    - final destination url afterr redirects
-    - content type
-    - ssl certificae validity (use https? ssl cert valid?)
-    - Domain analysis (blocklsit, shortened link, phishing/ malicious link?)
-    - content inspection? (keywords, js redirects, suspicious code)
-    - Response size and headers
+- What other things to check in url - dif error codes etc., eg page not found, network error etc
+    - timeouts/ retried (nicole) -main
+    - was it redirected? -  print redirect chain (nicole) - main
+    - content type (nicole)
+    - ssl certificae validity (use https? ssl cert valid?) (nicole) - main body of work
+    - Domain analysis (blocklsit, shortened link, phishing/ malicious link?) (oisin) - main body of work
+    - content inspection? (keywords, js redirects, suspicious code) (oisin)
+    - Response size and headers (nicole)
     - Rate limits or bot detection
     - Caching and expiry
-- ~~Merge our changes~~ (Nicole)
-- currently working on normalising url and returning chain but it doesnt work
+- merging changes (nicole)
 
 ## Done to date
-- find more broke links (Oisin)
+- Research technologies and look through common pages to find broken links to ensure project is useful (Nicole & Oisin)
+- Find more broke links (Oisin)
 - Create the base python script - just one main, init, whatever - base script that accepts command line arguments (Oisin)
 - Update read me with your parts (oisin)
 - Create a directory of documents (Nicole)
 - Reading in all the documents and checking the urls on the current page are good or not (Nicole)
+- Update txt file and send to nicole (Oisin)
+- Update code to accept user input of document & input validation of directories (Oisin)
+- Print output to csv (Oisin)
+- Document other things we should check about links (Nicole)
+- Retrying once if url fails (Nicole)
+- Check for different error codes and document error code meanings (Nicole)
+- Clean urls (Nicole)
+- Document if urls are reachable
 
 ### Future
 - spit broken links to csv (Oisin or nicole - not sure)
