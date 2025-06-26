@@ -13,7 +13,14 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 
 ## How to run
 ```
-python link-detection-bot.py "documents"
+usage: link-detection-bot.py [-h] -i input
+
+takes in a command line argument
+
+options:
+  -h, --help            show this help message and exit
+  -i input, --input input
+                        File name of input
 ```
 
 ## TODO:
@@ -28,7 +35,7 @@ python link-detection-bot.py "documents"
     - Response size and headers (nicole)
     - Rate limits or bot detection
     - Caching and expiry
-- merging changes (nicole)
+- ~~merging changes~~ (nicole)
 
 ## Done to date
 - Research technologies and look through common pages to find broken links to ensure project is useful (Nicole & Oisin)
