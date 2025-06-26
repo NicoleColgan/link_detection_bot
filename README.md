@@ -14,8 +14,8 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 ## TODO:
 ### For next week
 - update txt file and send to nicole (Oisin)
-- update code to accept user input of document & input validation of directorys(Oisin)
-- csv - document, url, statuscode, runTime, runName, working - pk: url, do we need doc table?? (Oisin)
+-~~ update code to accept user input of document & input validation of directorys(Oisin)~~
+- ~~csv - document, url, statuscode, runTime, runName, working - pk: url, do we need doc table?? (Oisin)~~
 - think aqbout other fields for csv (Nicole & Oisin)
 - retrying it fails onece (Nicole)
 - What other things to check in url - dif error codes etc., eg page not found, network error etc (Nicole)
@@ -57,6 +57,8 @@ This side-project is an opportunity to hone our skills across multiple areas of 
 1. used a gitignore for the first time to hide stuff from the version control
 2. Python - don't have much experience at all with language but learnt how to write a simple script with it
 3. Md- this is my first time writing/using markdown
+4. Csv - learnt how to create csv files
+5. Using clean input validation when adding arguments to the parser
 - cron jobs:
 
 ## Nicoles learnings

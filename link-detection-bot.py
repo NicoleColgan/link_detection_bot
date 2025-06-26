@@ -1,3 +1,5 @@
+import csv
+from datetime import datetime
 import os   # To acces files and folders
 import re   # To find URLS using patterns
 import fitz # Reads pdf files (comes from PyMuPDF)
@@ -9,6 +11,7 @@ class Main():
 
     def __init__(self, args):
        self.args= args
+       self.results = []
 
     @staticmethod
     def extract_urls(content):
@@ -38,13 +41,28 @@ class Main():
 
     @staticmethod
     def get_response(url):
-        try:
+      try:
             # Get headers, follow redirects, wait 5s
             response = requests.head(url, allow_redirects=True, timeout=5)
             return response.status_code
-        except:
+      except:
             # Unreachable, broken, url malformed, site down etc.,
             return "Error"
+
+
+    @staticmethod
+    def is_valid_directory(path):
+
+        if not os.path.isdir(path):
+            print(f'Error: "{path}" is not a valid directory')
+            sys.exit(1)
+        elif not any(os.path.isfile(os.path.join(path, f)) for f in os.listdir(path)):
+            print(f'Error: "{path}" is a directory but contains no files')
+            sys.exit(1)
+        else:
+            print(f'"{path}" is a valid directory with files')
+            return path
+
 
     def check_urls(self):
         # Use a set to filter out duplicates
@@ -76,20 +94,42 @@ class Main():
             status = Main.get_response(url)
             print(f"URL: {url}  ->  response:{status}\n\n")
 
+
+         #sort the urls into a csv file
+        for url in sorted(found_urls):
+                response_data = Main.get_response(url)
+                self.results.append({
+                    'url': url,
+                    'status_code': Main.get_response(url),
+                    'checked_at': datetime.now().isoformat()
+                })
+
+        self.write_csv()
+
+
+    def write_csv(self):
+        filename = f"url_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+            fieldnames = ['url', 'status_code', 'checked_at']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in self.results:
+                writer.writerow(row)
+        print(f"\nCSV report generated: {filename}")
+
+
     def validate_input(self):
         # handles parsing command line arguments
         parser = argparse.ArgumentParser( 
         description="takes in a command line argument"
         )
 
-        parser.add_argument("input", help="input file or value") #what arguments the script expects
-
-
+        parser.add_argument('-i', '--input', metavar='input', type=self.is_valid_directory, help='File name of input', required=True)
         self.args = parser.parse_args()
 
-        print(f"You've entered: {self.args.input}") #prints out the input for now, obviously this will change later
+        print(f"Validated input path: {self.args.input }")
 
-        #   validate input
+      
 
 
     def run(self):
