@@ -66,10 +66,10 @@ class Main():
         return urls
     
     @staticmethod
-    def check_redirects(url, response):
+    def check_redirects(response):
         final_url = response.url
         redirect_chain = [r.url for r in response.history]
-        was_redirected = url != final_url
+        was_redirected = bool(response.history)
         return was_redirected, final_url, redirect_chain
 
     @staticmethod
@@ -79,7 +79,7 @@ class Main():
             try:
                 # Get headers, follow redirects, wait 5s
                 response = requests.head(url, allow_redirects=True, timeout=5)
-                was_redirected, final_url, redirect_chain = Main.check_redirects(url, response)
+                was_redirected, final_url, redirect_chain = Main.check_redirects(response)
                 return response.status_code, was_redirected, final_url, redirect_chain
             except Exception:
                 # Try once more but wait one second
