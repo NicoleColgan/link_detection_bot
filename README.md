@@ -106,3 +106,5 @@ A HEAD request is like a GET but it only asks for headers not full content (all 
 12. ```parsed = urlparse(url.strip())``` strip() removes whitespace and urlparse() seperates it into url parts
 13. the fragment is the part after the '#' in a url which points to a specific part of th page
 14. ```urlunparse(stripped).rstrip('/')``` rebuild url after cleaning
+15. https://google.com redirects to https://www.google.com
+16. redirect history will be empty if theres no redirects
