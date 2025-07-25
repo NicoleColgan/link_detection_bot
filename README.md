@@ -36,6 +36,8 @@ options:
     - Rate limits or bot detection
     - Caching and expiry
 - ~~merging changes~~ (nicole)
+- print to output directory so we can keep track of things
+- add progress bar when printing to csv & checking urls - or print checking url...?
 
 ## Done to date
 - Research technologies and look through common pages to find broken links to ensure project is useful (Nicole & Oisin)
@@ -78,6 +80,29 @@ options:
 - What file formats to consider
 - Just realised we cant do the whoel recursive search yet if were using documents (unless we download a document fromn the url and repeat the process). This is more so viable if were using urls to search through pages.
 - spit into a db
+
+### AI
+1. Broken link explainer If you’re checking links and get errors or 404s:
+    - Use AI to explain why a link might be broken.
+    - Feed it the history/redirects, headers, and have it give a user-friendly explanation.
+    - “This link likely failed because the domain is misconfigured or expired.”
+2. AI Summarizer for Documents
+    - For .pdf, .html, .md files you're already scanning, use LangChain to:
+    - Summarize the file.
+    - Highlight key points or check for policy terms.
+    - Use TextLoader + chunking + summarization chains.
+
+This gives a direct showcase of embeddings, chains, and LLM integration.
+🧠 Stack You Could Use
+- LangChain for building pipelines or agents.
+- OpenAI or Claude for reasoning and summarization.
+- FAISS / Chroma for document embedding + retrieval.
+- Streamlit or Flask for showing a working demo.
+
+✅ Tips for Impressiveness
+- Use prompt templates and show prompt engineering skill.
+- Add retry logic, fallback models, and tool use (e.g. metadata extractor).
+- Document it! Show architecture diagrams and example queries in README.
 
 ## Oisins learning
 1. used a gitignore for the first time to hide stuff from the version control
