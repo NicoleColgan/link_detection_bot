@@ -36,6 +36,8 @@ options:
     - Rate limits or bot detection
     - Caching and expiry
 - ~~merging changes~~ (nicole)
+- print to output directory so we can keep track of things
+- add progress bar when printing to csv & checking urls - or print checking url...?
 
 ## Done to date
 - Research technologies and look through common pages to find broken links to ensure project is useful (Nicole & Oisin)
@@ -79,6 +81,29 @@ options:
 - Just realised we cant do the whoel recursive search yet if were using documents (unless we download a document fromn the url and repeat the process). This is more so viable if were using urls to search through pages.
 - spit into a db
 
+### AI
+1. Broken link explainer If you’re checking links and get errors or 404s:
+    - Use AI to explain why a link might be broken.
+    - Feed it the history/redirects, headers, and have it give a user-friendly explanation.
+    - “This link likely failed because the domain is misconfigured or expired.”
+2. AI Summarizer for Documents
+    - For .pdf, .html, .md files you're already scanning, use LangChain to:
+    - Summarize the file.
+    - Highlight key points or check for policy terms.
+    - Use TextLoader + chunking + summarization chains.
+
+This gives a direct showcase of embeddings, chains, and LLM integration.
+🧠 Stack You Could Use
+- LangChain for building pipelines or agents.
+- OpenAI or Claude for reasoning and summarization.
+- FAISS / Chroma for document embedding + retrieval.
+- Streamlit or Flask for showing a working demo.
+
+✅ Tips for Impressiveness
+- Use prompt templates and show prompt engineering skill.
+- Add retry logic, fallback models, and tool use (e.g. metadata extractor).
+- Document it! Show architecture diagrams and example queries in README.
+
 ## Oisins learning
 1. used a gitignore for the first time to hide stuff from the version control
 2. Python - don't have much experience at all with language but learnt how to write a simple script with it
@@ -106,3 +131,5 @@ A HEAD request is like a GET but it only asks for headers not full content (all 
 12. ```parsed = urlparse(url.strip())``` strip() removes whitespace and urlparse() seperates it into url parts
 13. the fragment is the part after the '#' in a url which points to a specific part of th page
 14. ```urlunparse(stripped).rstrip('/')``` rebuild url after cleaning
+15. https://google.com redirects to https://www.google.com
+16. redirect history will be empty if theres no redirects
