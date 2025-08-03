@@ -8,6 +8,8 @@ import argparse
 import sys
 import time
 from urllib.parse import urlparse, urlunparse
+from langchain_community.chat_models import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
 
 class Main():
     STATUS_MEANINGS = {
@@ -21,6 +23,27 @@ class Main():
         503: "Service Unavailable",
         "Error": "Unreachable or Timed Out"
     }
+
+    STYLE = "plain English, concise and friendly"
+
+    TEMPLATE_STRING = """
+        Produce an explanation in a style that is {style} to explain why the following url is broken.
+        Further to this, suggest possible next steps for the user if the link is broken.
+
+        use the following information to inform your explanation:
+        - url: {url}
+        - status: {status}
+        - status_code_meaning: {status_code_meaning}
+        - reachable: {reachable}
+        - was_redirected: {was_redirected}
+        - final_url: {final_url} 
+        - redirect_chain: {redirect_chain} 
+        - checked_at: {checked_at}
+
+        The output should be a valid JSON object with the following keys:
+        - explanation
+        - next_steps
+        """
 
     def __init__(self, args):
        self.args= args
@@ -113,6 +136,44 @@ class Main():
                 writer.writerow(row)
         print(f"\nCSV report generated: {filename}")
 
+    def format_prompt(self, url, status, status_code_meaning, reachable, was_redirected, final_url, redirect_chain, checked_at):
+        prompt_template = ChatPromptTemplate.from_template(self.TEMPLATE_STRING)
+        
+        return prompt_template.format_messages(
+            style=self.STYLE,
+            url=url,
+            status=status,
+            status_code_meaning=status_code_meaning,
+            reachable=reachable,
+            was_redirected=was_redirected,
+            final_url=final_url,
+            redirect_chain=redirect_chain,
+            checked_at=checked_at
+        )
+
+    def link_summariser(self, url, status, status_code_meaning, reachable, was_redirected, final_url, redirect_chain, checked_at):
+        # - load env vars???
+        # - set up prompt template
+        # - call llm using langchains cht model wrapper
+        # set temp to 0 for deterministic output
+        if reachable == 'Yes':
+            return "This link is working and reachable.", "N/A"
+        
+        chat = ChatOpenAI(temperature=0.0)
+        user_message = self.format_prompt(url, status, status_code_meaning, reachable, was_redirected, final_url, redirect_chain, checked_at)
+        user_response = chat(user_message)
+        print(user_response)
+        print(user_response.content)
+        print("==============")
+        # - add explanation to csv
+        # - ask user which llm to use - default chat
+        # - add retry logic & fallback
+        # - pass Headers (if available): Response headers, which may indicate blocks, SSL issues, or bot detection.
+        # - Error details (if any): Exception message or timeout info.
+        # - build a simple ui (node.js??/ streamlit/ flask) to demo feature 
+        # - add requrements block which installs required packages
+        return None
+
     def check_urls(self):
         # Use a set to filter out duplicates
         found_urls = set()
@@ -137,15 +198,21 @@ class Main():
         # sorting them for clarity and debugging
         for url in sorted(found_urls):
             status, was_redirected, final_url, redirect_chain = Main.get_response(url)
+            status_code_meaning = self.explain_status(status)
+            reachable = "Yes" if Main.is_link_ok(status) else "No"
+            checked_at = datetime.now().isoformat()
+            explanation, next_steps = self.link_summariser(url, status, status_code_meaning, reachable, was_redirected, final_url, redirect_chain, checked_at)
             self.results.append({
                 "url": url,
+                "explanation": explanation,
+                "next_steps": next_steps,
                 "status_code": status,
-                "status_code_meaning": self.explain_status(status),
-                "reachable": "yes" if Main.is_link_ok(status) else "No",
+                "status_code_meaning": status_code_meaning,
+                "reachable": reachable,
                 "redirected": was_redirected,
                 "final_url": final_url,
                 "redirect_chain": redirect_chain,
-                'checked_at': datetime.now().isoformat()
+                'checked_at': checked_at
             })
             print(f"{self.results[-1]}\n")
 
