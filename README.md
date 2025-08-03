@@ -25,19 +25,17 @@ options:
 
 ## TODO:
 ### For next week
-- What other things to check in url - dif error codes etc., eg page not found, network error etc
-    - timeouts/ retried (nicole) -main
-    - was it redirected? -  print redirect chain (nicole) - main
-    - content type (nicole)
-    - ssl certificae validity (use https? ssl cert valid?) (nicole) - main body of work
-    - Domain analysis (blocklsit, shortened link, phishing/ malicious link?) (oisin) - main body of work
-    - content inspection? (keywords, js redirects, suspicious code) (oisin)
-    - Response size and headers (nicole)
-    - Rate limits or bot detection
-    - Caching and expiry
-- ~~merging changes~~ (nicole)
-- print to output directory so we can keep track of things
-- add progress bar when printing to csv & checking urls - or print checking url...?
+#### Link summariser
+- ~~set up prompt template (nicole)~~
+- ~~call llm using langchains cht model wrapper (nicole)~~
+- extract json entries from completion
+- add explanation to csv
+- ask user which llm to use - default chat
+- add retry logic & fallback
+- pass Headers (if available): Response headers, which may indicate blocks, SSL issues, or bot detection.
+- Error details (if any): Exception message or timeout info.
+- build a simple ui (node.js??/ streamlit/ flask) to demo feature 
+- add requrements block which installs required packages
 
 ## Done to date
 - Research technologies and look through common pages to find broken links to ensure project is useful (Nicole & Oisin)
@@ -56,6 +54,18 @@ options:
 - Document if urls are reachable
 
 ### Future
+- What other things to check in url - dif error codes etc., eg page not found, network error etc
+    - timeouts/ retried (nicole) -main
+    - was it redirected? -  print redirect chain (nicole) - main
+    - content type (nicole)
+    - ssl certificae validity (use https? ssl cert valid?) (nicole) - main body of work
+    - Domain analysis (blocklsit, shortened link, phishing/ malicious link?) (oisin) - main body of work
+    - content inspection? (keywords, js redirects, suspicious code) (oisin)
+    - Response size and headers (nicole)
+    - Rate limits or bot detection
+    - Caching and expiry
+- print to output directory so we can keep track of things
+- add progress bar when printing to csv & checking urls - or print checking url...?
 - spit broken links to csv (Oisin or nicole - not sure)
 - Check not only if theyre 404s but if the link exists period
 - doc tavble - last updated
@@ -84,8 +94,12 @@ options:
 ### AI
 1. Broken link explainer If you’re checking links and get errors or 404s:
     - Use AI to explain why a link might be broken.
+    - Complex scenarios: Sometimes, the reason isn’t obvious from the status code alone. For example, a redirect chain might show a link bouncing between domains, or headers might reveal a blocklist, expired SSL, or bot detection.
+User-friendly explanations: AI can summarize technical details (redirects, headers, errors) into plain English, tailored for non-technical users.
     - Feed it the history/redirects, headers, and have it give a user-friendly explanation.
     - “This link likely failed because the domain is misconfigured or expired.”
+    - Contextual suggestions: AI can suggest next steps (e.g., “Try contacting the site owner,” “Check if the domain has expired,” “This link may be blocked by your network”).
+    - This becomes more useful as the app scales because as you add more checks (SSL, phishing, content inspection), AI can combine all signals for a holistic explanation.
 2. AI Summarizer for Documents
     - For .pdf, .html, .md files you're already scanning, use LangChain to:
     - Summarize the file.
@@ -133,3 +147,7 @@ A HEAD request is like a GET but it only asks for headers not full content (all 
 14. ```urlunparse(stripped).rstrip('/')``` rebuild url after cleaning
 15. https://google.com redirects to https://www.google.com
 16. redirect history will be empty if theres no redirects
+17. Including style is recommended because:
+    - It lets you control the tone, complexity, and format of the explanation (e.g., plain English, professional, technical, friendly).
+    - It makes your prompt more flexible for different audiences or use cases.
+    - You can easily change or experiment with how the LLM responds without rewriting your template.
