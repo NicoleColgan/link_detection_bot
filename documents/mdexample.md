@@ -16,3 +16,4 @@ Here's another markdown file with links.
 - [Bad Path](https://www.github.com/thispagedoesnotexist)
 - [Duplicate](https://www.github.com/thispagedoesnotexist)
 - [trailing hash](https://example.com/page?query=2#/)
+- [redirect](https://google.com)
