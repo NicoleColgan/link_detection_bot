@@ -144,7 +144,9 @@ A HEAD request is like a GET but it only asks for headers not full content (all 
 12. ```parsed = urlparse(url.strip())``` strip() removes whitespace and urlparse() seperates it into url parts
 13. the fragment is the part after the '#' in a url which points to a specific part of th page
 14. ```urlunparse(stripped).rstrip('/')``` rebuild url after cleaning
-15.  including style is recommended because:
+15. https://google.com redirects to https://www.google.com
+16. redirect history will be empty if theres no redirects
+17. Including style is recommended because:
     - It lets you control the tone, complexity, and format of the explanation (e.g., plain English, professional, technical, friendly).
     - It makes your prompt more flexible for different audiences or use cases.
     - You can easily change or experiment with how the LLM responds without rewriting your template.

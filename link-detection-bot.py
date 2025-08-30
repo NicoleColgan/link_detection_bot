@@ -250,7 +250,7 @@ class Main():
                 "reason": reason,
                 "resolution_steps": resolution_steps
             })
-            print(f"{self.results[-1]}\n")
+            #print(f"{self.results[-1]}\n")
 
         self.write_csv()
 
