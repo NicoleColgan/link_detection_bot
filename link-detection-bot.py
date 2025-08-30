@@ -10,51 +10,50 @@ import time
 from urllib.parse import urlparse, urlunparse
 from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
+from dotenv import load_dotenv, find_dotenv
+from langchain.output_parsers import ResponseSchema, StructuredOutputParser
+from langchain.chains import SequentialChain
+# Place this at the top of your script, after imports but before any class or function definitions. This way, your environment variables are loaded before any code that needs them runs.
+_ = load_dotenv(find_dotenv())
 
 class Main():
-    STATUS_MEANINGS = {
-        200: "OK",
-        301: "Permanantely Moved",
-        302: "Found (Redirect)",
-        403: "Forbidden",
-        404: "Not Found",
-        500: "Internal Server Error",
-        502: "Bad Gateway",
-        503: "Service Unavailable",
-        "Error": "Unreachable or Timed Out"
-    }
+    VALIDITY_PROMPT = """
+        You are checking whether a link on a website is acceptable for end users, not just technically reachable.
 
-    STYLE = "plain English, concise and friendly"
+        Use the following link check results:
+        - original_url: {original_url}
+        - response_url: {response_url}
+        - status_code: {status_code}
+        - reason: {reason}
+        - ok: {ok}
+        - is_redirect: {is_redirect}
+        - elapsed: {elapsed}
+        - redirect_chain: {redirect_chain}
+        - cookies: {cookies}
+        - request_method: {request_method}
+        - content_snippet: {content_snippet}
+        - signals: {signals}
 
-    TEMPLATE_STRING = """
-        Produce an explanation in a style that is {style} to explain why the following url is broken.
-        Further to this, suggest possible next steps for the user if the link is broken.
-
-        use the following information to inform your explanation:
-        - url: {url}
-        - status: {status}
-        - status_code_meaning: {status_code_meaning}
-        - reachable: {reachable}
-        - was_redirected: {was_redirected}
-        - final_url: {final_url} 
-        - redirect_chain: {redirect_chain} 
-        - checked_at: {checked_at}
-
-        The output should be a valid JSON object with the following keys:
-        - explanation
-        - next_steps
-        """
+        Rules for reasoning:
+        1. Do not rely on status_code=200 or ok=True alone. Many pages return 200 but may be user-unfriendly (custom 404s, empty, or placeholder pages).
+        2. Redirects and response_url should be checked — if the final page is broken, empty, placeholder, or clearly an error page, flag it. Login pages should **not** be considered broken.
+        3. content_snippet is a strong signal: empty content, "404", "not found", "coming soon", or other obvious placeholder text should mark it as bad.
+        4. signals are extracted from the response text and may include known issues or heuristics — treat them as hints.
+        5. Other fields (elapsed, cookies, request_method) provide context but are not decisive.
+        6. A page is acceptable if it delivers content that functions correctly. Pages requiring login or authentication are considered acceptable and should **not** be flagged as bad.
+        
+        {format_instructions}
+    """
+    def install_dependencies(self):
+            #!pip install pandas
+            print("install_dependencies function not yet defined")
 
     def __init__(self, args):
        self.args= args
        self.results = []
-
-    def explain_status(self, code):
-        return self.STATUS_MEANINGS.get(code)
-    
-    @staticmethod
-    def is_link_ok(code):
-        return code in [200, 301, 302]
+       self.install_dependencies()
+       # Add a little randomness for creativity
+       self.llm=ChatOpenAI(temperature=0.9)
 
     @staticmethod
     def normalise_url(url):
@@ -87,23 +86,15 @@ class Main():
                 content = page.get_text()
                 urls.extend(Main.extract_urls(content))
         return urls
-    
-    @staticmethod
-    def check_redirects(url, response):
-        final_url = response.url
-        redirect_chain = [r.url for r in response.history]
-        was_redirected = url != final_url
-        return was_redirected, final_url, redirect_chain
 
     @staticmethod
     def get_response(url):
         url = Main.normalise_url(url)
         for attempt in range(2):
-            try:
-                # Get headers, follow redirects, wait 5s
-                response = requests.head(url, allow_redirects=True, timeout=5)
-                was_redirected, final_url, redirect_chain = Main.check_redirects(url, response)
-                return response.status_code, was_redirected, final_url, redirect_chain
+            try:     
+                headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+                response = requests.get(url, headers=headers, allow_redirects=True, timeout=10)
+                return response
             except Exception:
                 # Try once more but wait one second
                 if attempt == 0:
@@ -111,7 +102,7 @@ class Main():
                     time.sleep(1)
                 else:
                     # Unreachable, broken, url malformed, site down etc.,
-                    return "Error", "Error", "Error", "Error"
+                    return None
 
     @staticmethod
     def is_valid_directory(path):
@@ -136,44 +127,74 @@ class Main():
                 writer.writerow(row)
         print(f"\nCSV report generated: {filename}")
 
-    def format_prompt(self, url, status, status_code_meaning, reachable, was_redirected, final_url, redirect_chain, checked_at):
+    # prob should use something like this
+    def format_prompt(self, response_info):
         prompt_template = ChatPromptTemplate.from_template(self.TEMPLATE_STRING)
-        
+
         return prompt_template.format_messages(
             style=self.STYLE,
-            url=url,
-            status=status,
-            status_code_meaning=status_code_meaning,
-            reachable=reachable,
-            was_redirected=was_redirected,
-            final_url=final_url,
-            redirect_chain=redirect_chain,
-            checked_at=checked_at
+            url=response_info["url"],
+            status_code=response_info["status_code"],
+            reason=response_info["reason"],
+            ok=response_info["ok"],
+            is_redirect=response_info["is_redirect"],
+            elapsed=response_info["elapsed"],
+            redirect_chain=response_info["redirect_chain"],
+            cookies=response_info["cookies"],
+            request_method=response_info["request_method"],
+            content_snippet=response_info["content_snippet"],
+            checked_at=response_info["checked_at"]
         )
 
-    def link_summariser(self, url, status, status_code_meaning, reachable, was_redirected, final_url, redirect_chain, checked_at):
-        # - load env vars???
-        # - set up prompt template
-        # - call llm using langchains cht model wrapper
-        # set temp to 0 for deterministic output
-        if reachable == 'Yes':
-            return "This link is working and reachable.", "N/A"
-        
-        chat = ChatOpenAI(temperature=0.0)
-        user_message = self.format_prompt(url, status, status_code_meaning, reachable, was_redirected, final_url, redirect_chain, checked_at)
-        user_response = chat(user_message)
-        print(user_response)
-        print(user_response.content)
-        print("==============")
-        # - add explanation to csv
-        # - ask user which llm to use - default chat
-        # - add retry logic & fallback
-        # - pass Headers (if available): Response headers, which may indicate blocks, SSL issues, or bot detection.
-        # - Error details (if any): Exception message or timeout info.
-        # - build a simple ui (node.js??/ streamlit/ flask) to demo feature 
-        # - add requrements block which installs required packages
-        return None
+    #is this the best way to do this?
+    def generate_response_schemas(self):
+        # use langchain parser to extract json
+        usable_schema = ResponseSchema(name="usable", description="Is this link actually usable for a user? Answer with 'True' if it is, 'False' if it is not, and 'Unknown' if you are not sure")
+        reason_schema = ResponseSchema(name="reason", description="Explanation as to why you answered True or False to whether or not its usable")
+        resolution_steps = ResponseSchema(name="resolution_steps", description="suggest possible next steps for the user if the link is not usable. if it is usable, just output 'N/A'")
+        return [usable_schema, reason_schema, resolution_steps]
+    
+    def check_link_validity(self, response_info):
+        prompt_template = ChatPromptTemplate.from_template(self.VALIDITY_PROMPT)
+        response_schemas = self.generate_response_schemas()
+        output_parser = StructuredOutputParser(response_schemas=response_schemas)
+        format_instructions = output_parser.get_format_instructions()
 
+        messages = prompt_template.format_messages(
+            original_url=response_info["original_url"],
+            response_url=response_info["response_url"],
+            status_code=response_info["status_code"],
+            reason=response_info["reason"],
+            ok=response_info["ok"],
+            is_redirect=response_info["is_redirect"],
+            elapsed=response_info["elapsed"],
+            redirect_chain=response_info["redirect_chain"],
+            cookies=response_info["cookies"],
+            request_method=response_info["request_method"],
+            content_snippet=response_info["content_snippet"],
+            signals=response_info["signals"],
+            format_instructions=format_instructions
+        )
+        validity_response = self.llm(messages)
+        output_dict = output_parser.parse(validity_response.content)
+        
+        return output_dict.get("usable"), output_dict.get("reason"), output_dict.get("resolution_steps")
+
+    def detect_signals(self, response):
+        #check if theres amy red flag key words in response to indicate an issue (page could hazve a custom error page which would return ok but isnt)
+
+        signals=[]
+
+        if not response or response.text == "":
+            return signals.append("error")
+        
+        snippet = response.text[:500].lower()
+        for word in ["coming soon", "not found", "404", "error", "forbidden"]:
+            if word in snippet:
+                signals.append(word)
+
+        return signals
+    
     def check_urls(self):
         # Use a set to filter out duplicates
         found_urls = set()
@@ -197,22 +218,37 @@ class Main():
 
         # sorting them for clarity and debugging
         for url in sorted(found_urls):
-            status, was_redirected, final_url, redirect_chain = Main.get_response(url)
-            status_code_meaning = self.explain_status(status)
-            reachable = "Yes" if Main.is_link_ok(status) else "No"
+            # status, was_redirected, final_url, redirect_chain = Main.get_response(url)
+            response = Main.get_response(url)
             checked_at = datetime.now().isoformat()
-            explanation, next_steps = self.link_summariser(url, status, status_code_meaning, reachable, was_redirected, final_url, redirect_chain, checked_at)
+            
+            if response is None:
+                response_info = {}
+            else:
+                signals= self.detect_signals(response)
+                response_info = {
+                "original_url": url,
+                "response_url": response.url,
+                "reason": response.reason,
+                "status_code": response.status_code,
+                "ok": response.ok,
+                "is_redirect": response.is_redirect,
+                "elapsed": response.elapsed,
+                "redirect_chain": [redirect.url for redirect in response.history],
+                "cookies": response.cookies,
+                "request_method": response.request.method,
+                "content_snippet": response.text[:500],
+                "signals": signals,
+                "checked_at": checked_at
+                }
+            
+            # Use LLM to check link validity cause even some 200s arent ok
+            usable, reason, resolution_steps = self.check_link_validity(response_info)
             self.results.append({
-                "url": url,
-                "explanation": explanation,
-                "next_steps": next_steps,
-                "status_code": status,
-                "status_code_meaning": status_code_meaning,
-                "reachable": reachable,
-                "redirected": was_redirected,
-                "final_url": final_url,
-                "redirect_chain": redirect_chain,
-                'checked_at': checked_at
+                "original_url": url,
+                "usable": usable,
+                "reason": reason,
+                "resolution_steps": resolution_steps
             })
             print(f"{self.results[-1]}\n")
 
@@ -221,7 +257,7 @@ class Main():
     def validate_input(self):
         # handles parsing command line arguments
         parser = argparse.ArgumentParser( 
-        description="takes in a command line argument"
+            description="takes in a command line argument"
         )
 
         parser.add_argument('-i', '--input', metavar='input', type=self.is_valid_directory, help='File name of input', required=True)
