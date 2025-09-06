@@ -25,40 +25,52 @@ options:
 
 ## TODO:
 ### For next week
-- What other things to check in url - dif error codes etc., eg page not found, network error etc
-    - timeouts/ retried (nicole) -main
-    - was it redirected? -  print redirect chain (nicole) - main
-    - content type (nicole)
-    - ssl certificae validity (use https? ssl cert valid?) (nicole) - main body of work
-    - Domain analysis (blocklsit, shortened link, phishing/ malicious link?) (oisin) - main body of work
-    - content inspection? (keywords, js redirects, suspicious code) (oisin)
-    - Response size and headers (nicole)
-    - Rate limits or bot detection
-    - Caching and expiry
-- ~~merging changes~~ (nicole)
-- print to output directory so we can keep track of things
-- add progress bar when printing to csv & checking urls - or print checking url...?
+#### Link summariser
+- ~~set up prompt template (nicole)~~
+- ~~call llm using langchains cht model wrapper (nicole)~~
+- extract json entries from completion
+- add explanation to csv
+- ask user which llm to use - default chat
+- add retry logic & fallback
+- pass Headers (if available): Response headers, which may indicate blocks, SSL issues, or bot detection.
+- Error details (if any): Exception message or timeout info.
+- build a simple ui (node.js??/ streamlit/ flask) to demo feature 
+- add requrements block which installs required packages
 
 ## Done to date
-- Research technologies and look through common pages to find broken links to ensure project is useful (Nicole & Oisin)
-- Find more broke links (Oisin)
-- Create the base python script - just one main, init, whatever - base script that accepts command line arguments (Oisin)
-- Update read me with your parts (oisin)
-- Create a directory of documents (Nicole)
-- Reading in all the documents and checking the urls on the current page are good or not (Nicole)
-- Update txt file and send to nicole (Oisin)
-- Update code to accept user input of document & input validation of directories (Oisin)
-- Print output to csv (Oisin)
-- Document other things we should check about links (Nicole)
-- Retrying once if url fails (Nicole)
-- Check for different error codes and document error code meanings (Nicole)
-- Clean urls (Nicole)
+- Research technologies and look through common pages to find broken links to ensure project is useful
+- Create README with project outline
+- Create the base python script
+- Create a directory of documents
+- Reading in all the documents and checking the urls on the current page are good or not
+- Update code to accept user input of document & input validation of directories 
+- Add ability to check different file types
+- Print output to csv
+- Document other things we should check about links 
+- Retrying once if url fails
+- Reasearch the other things we should be checking in the url to validate its usability:
+    - status code: code returned by browser to indicate if the page is ok
+    - cookies: Sometimes sites block bots or require cookies.
+    - response reason: reason as to why the response is apparently ok or not
+    - content/text: For error pages, a snippet of the response body might help the LLM explain custom errors.
+    - ok: Boolean indicating if the response was successful (status code 200–399).
+    - request method: The HTTP method used (GET, HEAD, etc.).
+    - Response url: final url it lands on. Might contain useful info
+    - Redirect chain: list of urls it goes through to get to the final url. May contain useful info like keywords. Also a lot of redirects ight be considered suspicous.
+- Clean url
 - Document if urls are reachable
+- Integrate Langchain into project
+- For each url, extract the useful info to a response object
+- Check the text response for suspicious key words
+- Use a Langchain prompt template to create a prompt for the llm
+- Prompt asks the llm if a link is usable given the response info
+- Use Langchain format instructions to ensure the llm produces the desired format and we can parse it
+- Format instructions asks LLM to output True or False to whether or not the link is usable, then explain why, and provide resolutions steps if neccesary
+
 
 ### Future
+- add progress bar when printing to csv & checking urls - or print checking url...?
 - spit broken links to csv (Oisin or nicole - not sure)
-- Check not only if theyre 404s but if the link exists period
-- doc tavble - last updated
 - dont visit malicious links? link validation
 
 ## notes:
@@ -73,24 +85,25 @@ options:
 - how do we give it something to check?? maybe we do something similar like we did & download files or just give it a list of files or links (in the case of wiki, i guess it would be a url but it also could be for the file to be fair so maybe a list of urls in a csv or something). Probably easier to start with explicit in put eg a directory with files in it or wikis etc then add crawling functionality later
 
 ## Future work
-- Add input parameters (parsers) and input validation eg valid document directory
 - could consider crawling with dept limit
-- Integreation with llms to summarise content, suggest fixes
 - ui to upload files/ urls?
-- What file formats to consider
-- Just realised we cant do the whoel recursive search yet if were using documents (unless we download a document fromn the url and repeat the process). This is more so viable if were using urls to search through pages.
-- spit into a db
+- spit into a db instead of csv???
+- build a simple ui (node.js??/ streamlit/ flask) to demo feature 
+- add requrements block which installs required packages
 
 ### AI
-1. Broken link explainer If you’re checking links and get errors or 404s:
-    - Use AI to explain why a link might be broken.
-    - Feed it the history/redirects, headers, and have it give a user-friendly explanation.
-    - “This link likely failed because the domain is misconfigured or expired.”
-2. AI Summarizer for Documents
-    - For .pdf, .html, .md files you're already scanning, use LangChain to:
-    - Summarize the file.
-    - Highlight key points or check for policy terms.
-    - Use TextLoader + chunking + summarization chains.
+#### todo:
+- fix for null responses
+- get ai to do the link extractioln then calling then explanation as a chain - could also ask it for red flag words
+- could use chunking for redflag keyword thing to ensure overlap
+- optimise chunk size for red flag
+- add new redirect logic
+- could lowk use ai to extract links too (chain1) ???? then chain it to call the url (chain2) then output the response then do the response summariser (chain3)!!!!!!!!!
+- integrate diff llms & fallback llm
+- retry logic & fallback llm
+- FAISS / Chroma for document embedding + retrieval.
+- Document it! Show architecture diagrams and example queries in README.
+
 
 This gives a direct showcase of embeddings, chains, and LLM integration.
 🧠 Stack You Could Use
@@ -133,3 +146,8 @@ A HEAD request is like a GET but it only asks for headers not full content (all 
 14. ```urlunparse(stripped).rstrip('/')``` rebuild url after cleaning
 15. https://google.com redirects to https://www.google.com
 16. redirect history will be empty if theres no redirects
+17. Including style is recommended because:
+    - It lets you control the tone, complexity, and format of the explanation (e.g., plain English, professional, technical, friendly).
+    - It makes your prompt more flexible for different audiences or use cases.
+    - You can easily change or experiment with how the LLM responds without rewriting your template.
+16. Using langchain llm wrappers, prompt template, format instructions, parsing, memory, chains
