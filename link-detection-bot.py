@@ -44,14 +44,10 @@ class Main():
         
         {format_instructions}
     """
-    def install_dependencies(self):
-            #!pip install pandas
-            print("install_dependencies function not yet defined")
 
     def __init__(self, args):
        self.args= args
        self.results = []
-       self.install_dependencies()
        # Add a little randomness for creativity
        self.llm=ChatOpenAI(temperature=0.9)
 
@@ -90,7 +86,7 @@ class Main():
     @staticmethod
     def get_response(url):
         url = Main.normalise_url(url)
-        for attempt in range(2):
+        for attempt in range(2):    # re-tries
             try:     
                 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
                 response = requests.get(url, headers=headers, allow_redirects=True, timeout=10)
@@ -120,7 +116,7 @@ class Main():
     def write_csv(self):
         filename = f"url_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
         with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
-            fieldnames = ['url', 'status_code', 'status_code_meaning', 'reachable', 'redirected', 'final_url', 'redirect_chain', 'checked_at']
+            fieldnames = ["original_url", "usable", "reason", "resolution_steps"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for row in self.results:
@@ -224,6 +220,9 @@ class Main():
             
             if response is None:
                 response_info = {}
+                usable = False
+                reason = "no response"
+                resolution_steps = "replace with valid url"
             else:
                 signals= self.detect_signals(response)
                 response_info = {
@@ -242,15 +241,16 @@ class Main():
                 "checked_at": checked_at
                 }
             
-            # Use LLM to check link validity cause even some 200s arent ok
-            usable, reason, resolution_steps = self.check_link_validity(response_info)
+                # Use LLM to check link validity cause even some 200s arent ok
+                usable, reason, resolution_steps = self.check_link_validity(response_info)
+
             self.results.append({
                 "original_url": url,
                 "usable": usable,
                 "reason": reason,
                 "resolution_steps": resolution_steps
             })
-            #print(f"{self.results[-1]}\n")
+            print(f"{self.results[-1]}\n")
 
         self.write_csv()
 
