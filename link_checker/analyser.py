@@ -64,7 +64,7 @@ class LLMAnalyser:  # make it a class cause it needs to hold state. Every call t
             return {
                 "usable": parsed.get("usable"),
                 "reason": parsed.get("reason"),
-                "resolution_steps": parsed.get("steps")
+                "resolution_steps": parsed.get("resolution_steps")
             }
         except Exception as exc:
             logger.exception("LLM parsing error: %s", exc)

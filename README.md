@@ -1,6 +1,6 @@
-# Link Validation & Dead Link Detection Bot
+# 🤖 Link Validation & Dead Link Detection Bot 🤖
 
-## Project Overview
+## 📘 Project Overview
 
 This project is a personal learning initiative designed to explore AI-powered link validation — an intelligent system that automatically scans documents or web pages, checks for broken or outdated links, provides resolution step, and logs how links change over time.
 
@@ -10,7 +10,7 @@ It’s both a **learning exercise** and a **showcase project**, demonstrating:
     - Best practices like logging, retry logic, and structured output
     - A foundation for potential future UI or commercial use
 
-## Tech Stack
+## ⚙️ Tech Stack
 
 | Category | Tools Used |
 |-----------|------------|
@@ -23,7 +23,7 @@ It’s both a **learning exercise** and a **showcase project**, demonstrating:
 | (Future) UI | Streamlit / Next.js / Flask |
 
 
-## Core Features
+## 🧠 Core Features
 
 - Read from multiple file types (e.g., .txt, .pdf)
 - Extract URLs from documents
@@ -34,7 +34,7 @@ It’s both a **learning exercise** and a **showcase project**, demonstrating:
 - Retry logic using exponential backoff and clean URL normalization
 - Modular design: each module (reader, HTTP client, analyzer, reporter) has a single responsibility
 
-## How to Run
+## 🚀 How to Run
 
 1. Create a virtual environment
 ```bash
@@ -60,7 +60,7 @@ options:
   -i INPUT, --input     Directory or file path containing documents
 ```
 
-## Architecture Overview
+## 🧩 Architecture Overview
 ```
 link_checker/
 │
@@ -73,9 +73,9 @@ link_checker/
 ```
 
 ## Example Output
-![Example csv  - need to fix resolution steps here](images/ss1_need_to_fix_resolution.png)
+![Example csv  - need to fix resolution steps here](images/example_csv.png)
 
-## Current To-Do List
+## 📋 Current To-Do List
 
 ### Improvements & Next Steps
 
@@ -128,7 +128,7 @@ link_checker/
 - File handling and directory validation
 - Basic project organization principles
 
-## Future Vision
+## 💡 Future Vision
 
 - AI-based semantic change detection (detect when a link’s content changes significantly)
 - Option to recursively crawl a site (depth-limited)
