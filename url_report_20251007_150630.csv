@@ -1,0 +1,13 @@
+original_url,usable,reason,resolution_steps,status_code,response_url
+https://example.com/page?query=2,False,"The page returned a 404 error (Not Found) and the content snippet is a standard example domain page, indicating it is not the intended content.",Check the link for correctness or contact the website owner for the correct URL.,404,https://example.com/page?query=2
+https://github.com,True,"The link is acceptable for end users as the response_url is correct, status_code is 200, and the content snippet shows a valid webpage with content.",No action needed.,200,https://github.com/
+https://google.com,True,The link is acceptable for end users as it redirects to https://www.google.com/ which is a functioning page with content.,N/A,200,https://www.google.com/
+https://google.com/404,False,"The link leads to a 404 error page with placeholder text, indicating the content is not available.",Check for the correct URL or update the link to a valid page.,404,https://google.com/404
+https://translate.google.com/%20404,False,The link leads to a 404 error page with placeholder text.,Update the link to point to a valid page or remove it if no valid alternative exists.,404,https://translate.google.com/%20404
+https://www.github.com/thispagedoesnotexist,False,"The link leads to a 404 error page with 'Not Found' content snippet, indicating that the page does not exist.",Check for any typos in the URL or contact the website owner to ensure the correct page is linked.,404,https://github.com/thispagedoesnotexist
+https://www.google.com,True,"The link is acceptable for end users as the response_url is correct, status_code is 200, and the content snippet shows the Google homepage.",N/A,200,https://www.google.com/
+https://www.google.com/404,False,The link leads to a 404 error page with placeholder text and signals indicating it is not found.,Check for the correct URL or update the link to a valid page.,404,https://www.google.com/404
+https://www.google.com/search,True,"The link is acceptable for end users as it redirects to the Google homepage, which is a functioning and user-friendly page.",N/A,200,https://www.google.com/webhp
+https://www.wikipedia.org,True,The link is acceptable for end users as it leads to the Wikipedia homepage with relevant content.,N/A,200,https://www.wikipedia.org/
+https://www.youtube.com,True,"The link is acceptable for end users as the response_url is correct, status_code is 200, and the content snippet shows a valid HTML structure.",N/A,200,https://www.youtube.com/
+https://www.youtube.com/404,False,"The link leads to a 404 page with 'Not Found' content snippet, indicating it is not user-friendly.",Check for the correct URL or update the link to a valid page.,404,https://www.youtube.com/404
