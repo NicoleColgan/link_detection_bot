@@ -1,153 +1,159 @@
-# Project scope
-This project is a personal learning initiaive designed to explore technologies we already use. We are setting out to build a Link Validation & Dead Link Detection Bot: an intelligent system that automatically crawls a set of pages, checks for broken or outdated links, and stores a historical log of what has changed and when.
+# Link Validation & Dead Link Detection Bot
 
-The project aims to deepen our understanding of tools like Python CLI dev, React, Next.js, and LLMS while also exploring concepts like crawling, parsing, content comparison, similarity detection and ui design. There is the added benefit of designing a project that meaningfully sharpens our technical skills, reinforces best practices, and creates something useful that we could also maintain and showcase independently.
+## Project Overview
 
-This side-project is an opportunity to hone our skills across multiple areas of development, without the use of any confidential data. While the focus is on upskilling and mentorship, there may be potential for future commercial integration if the tool proves useful.
+This project is a personal learning initiative designed to explore AI-powered link validation — an intelligent system that automatically scans documents or web pages, checks for broken or outdated links, provides resolution step, and logs how links change over time.
 
-## details
-1. Input sources: lets start with files??
-2. Output: csv of broken links
-3. Initially flag just 404s?
-4. optional extras
+It’s both a **learning exercise** and a **showcase project**, demonstrating:
+    - Practical AI integration with LangChain and LLMs
+    - Python CLI development and modular design
+    - Best practices like logging, retry logic, and structured output
+    - A foundation for potential future UI or commercial use
 
-## How to run
-```
-usage: link-detection-bot.py [-h] -i input
+## Tech Stack
 
-takes in a command line argument
+| Category | Tools Used |
+|-----------|------------|
+| Language | Python |
+| AI/LLM | LangChain, OpenAI (Chat Models) |
+| File Parsing | PyMuPDF (fitz), Regex |
+| HTTP Requests | requests |
+| Data Handling | csv, argparse |
+| Logging | Python logging |
+| (Future) UI | Streamlit / Next.js / Flask |
 
+
+## Core Features
+
+- Read from multiple file types (e.g., .txt, .pdf)
+- Extract URLs from documents
+- Check link validity (HTTP status, redirects, cookies, etc.)
+- AI-powered analysis — the LLM explains whether a link is usable, why not, and how to fix it
+- Structured Output Parsing for reliable JSON-style responses
+- Logs + CSV export for all link checks
+- Retry logic using exponential backoff and clean URL normalization
+- Modular design: each module (reader, HTTP client, analyzer, reporter) has a single responsibility
+
+🚀 How to Run
+# 1. Create a virtual environment
+python -m venv venv
+# 2. Activate it
+venv\Scripts\activate      # (Windows)
+source venv/bin/activate   # (Mac/Linux)
+# 3. Install dependencies
+pip install -r requirements.txt
+# 4. Run the app
+python run.py -i documents
+
+CLI Options
+usage: run.py [-h] -i INPUT
 options:
-  -h, --help            show this help message and exit
-  -i input, --input input
-                        File name of input
+  -h, --help            Show help message
+  -i INPUT, --input     Directory or file path containing documents
+
+## Architecture Overview
+
+link_checker/
+│
+├── main.py            # Orchestrates the flow
+├── readers.py         # Extracts URLs from .txt / .pdf files
+├── http_client.py     # Makes requests, handles retries
+├── analyser.py        # Uses LangChain + LLM for AI validation
+├── reporter.py        # Exports results to CSV
+└── utils/             # Helper functions (normalization, logging, etc.)
+
+## Example Output
+![Example csv  - need to fix resolution steps here](images/ss1_need_to_fix_resolution.png)
+
+## Current To-Do List
+
+### Improvements & Next Steps
+
+- [ ] Allow user to choose LLM (default: ChatOpenAI) & add validation
+- [ ] Detect and skip potentially malicious URLs
+- [ ] Enhance redirect detection and handling
+- [ ] Build a small demo UI (Streamlit or Flask)
+- [ ] Integrate embeddings (FAISS / Chroma) for link context
+- [ ] Migrate from CSV to database (SQLite or Postgres)
+- [ ] Add unit tests (normalize_url, extract_urls, detect_signals)
+- [ ] Add progress bar / status indicator in CLI
+- [ ] Improve performance as LLm isnt always behaving reliably (improve prompt)
+- [ ] integrate more of a graph-based workflow and transform more tasks to AI use case
+
+### Completed Work
+
+- [x] Read .txt and .pdf files
+- [x] Extract and deduplicate URLs
+- [x] Validate links (status codes, redirects, cookies, etc.)
+- [x] Integrate LangChain and LLM analysis
+- [x] Structured LLM output via Format Instructions
+- [x] Generate CSV report
+- [x] Logging with logging module
+- [x] Modular architecture with clear responsibilities
+- [x] Add retry + exponential backoff logic
+- [x] Add signals to give LLM additional context for fallback pages
+
+
+## Learnings
+
+### Nicole’s Learnings
+
+- Prompt design, format instructions, and structured parsing with LangChain
+- Use of __name__ for logger configuration per module
+- Python type hints (List, Dict, Optional) and static methods
+- Regex URL extraction and URL normalization with urlparse
+- Understanding redirects, response attributes, and why HEAD requests are used
+- Logging setup (logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(message)s"))
+- Clean dictionary handling (.get(), unpacking with **, defaults using or "")
+- Design patterns: Single responsibility, modular structure
+- Difference between tuples and lists, and when to use each
+- How to write clean CLI programs with argument parsing and input validation
+
+### Oisín’s Learnings
+
+- Git branching, merging, and .gitignore
+- Markdown basics and documentation
+- Python fundamentals and creating CSV files
+- Using CLI argument parsing (argparse)
+- File handling and directory validation
+- Basic project organization principles
+
+## Future Vision
+
+- AI-based semantic change detection (detect when a link’s content changes significantly)
+- Option to recursively crawl a site (depth-limited)
+- Plug-in system for different document sources (docs, wikis, URLs)
+- Integration with monitoring dashboards or content management tools
+
+## Example: What the AI Sees
+    
+Prompt given to the LLM includes:
+- Response info (status, redirect chain, cookies, warning signals etc.)
+- Structured format instructions
+
+Example (simplified):
+```json
+Given the following response data:
+URL: https://example.com
+Status: 404 Not Found
+Content snippet: "Sorry, this page has moved"
+
+Decide:
+- Is the link usable (True/False)?
+- Why or why not?
+- Suggested resolution steps.
+
+Format your response as JSON:
+{
+  "usable": "...",
+  "reason": "...",
+  "resolution_steps": "..."
+}
 ```
 
-## TODO:
-### For next week
-#### Link summariser
-- ~~set up prompt template (nicole)~~
-- ~~call llm using langchains cht model wrapper (nicole)~~
-- extract json entries from completion
-- add explanation to csv
-- ask user which llm to use - default chat
-- add retry logic & fallback
-- pass Headers (if available): Response headers, which may indicate blocks, SSL issues, or bot detection.
-- Error details (if any): Exception message or timeout info.
-- build a simple ui (node.js??/ streamlit/ flask) to demo feature 
-- add requrements block which installs required packages
+# Summary
 
-## Done to date
-- Research technologies and look through common pages to find broken links to ensure project is useful
-- Create README with project outline
-- Create the base python script
-- Create a directory of documents
-- Reading in all the documents and checking the urls on the current page are good or not
-- Update code to accept user input of document & input validation of directories 
-- Add ability to check different file types
-- Print output to csv
-- Document other things we should check about links 
-- Retrying once if url fails
-- Reasearch the other things we should be checking in the url to validate its usability:
-    - status code: code returned by browser to indicate if the page is ok
-    - cookies: Sometimes sites block bots or require cookies.
-    - response reason: reason as to why the response is apparently ok or not
-    - content/text: For error pages, a snippet of the response body might help the LLM explain custom errors.
-    - ok: Boolean indicating if the response was successful (status code 200–399).
-    - request method: The HTTP method used (GET, HEAD, etc.).
-    - Response url: final url it lands on. Might contain useful info
-    - Redirect chain: list of urls it goes through to get to the final url. May contain useful info like keywords. Also a lot of redirects ight be considered suspicous.
-- Clean url
-- Document if urls are reachable
-- Integrate Langchain into project
-- For each url, extract the useful info to a response object
-- Check the text response for suspicious key words
-- Use a Langchain prompt template to create a prompt for the llm
-- Prompt asks the llm if a link is usable given the response info
-- Use Langchain format instructions to ensure the llm produces the desired format and we can parse it
-- Format instructions asks LLM to output True or False to whether or not the link is usable, then explain why, and provide resolutions steps if neccesary
-
-
-### Future
-- add progress bar when printing to csv & checking urls - or print checking url...?
-- spit broken links to csv (Oisin or nicole - not sure)
-- dont visit malicious links? link validation
-
-## notes:
-- It should periodically crawling page (recursively eg follow a docs links link...)
-- Need to be able to easily plug in different websites/ docs or something somehow to make it a useful tool for a variety of purposes
-- AI Use: Detect semantic change (e.g., if firmware has been renamed or replaced) not just broken URLs.
-- We can use react/ next js to build a simple ui where you can insert a url to recursively check links
-- The tool automatically checks whether urls on a page are:
-    1. alive or dead
-    2. Have changed signifigantly over time
-    3. Flag suspicious or broken pages using intelligent comparison - slow responses
-- how do we give it something to check?? maybe we do something similar like we did & download files or just give it a list of files or links (in the case of wiki, i guess it would be a url but it also could be for the file to be fair so maybe a list of urls in a csv or something). Probably easier to start with explicit in put eg a directory with files in it or wikis etc then add crawling functionality later
-
-## Future work
-- could consider crawling with dept limit
-- ui to upload files/ urls?
-- spit into a db instead of csv???
-- build a simple ui (node.js??/ streamlit/ flask) to demo feature 
-- add requrements block which installs required packages
-
-### AI
-#### todo:
-- fix for null responses
-- get ai to do the link extractioln then calling then explanation as a chain - could also ask it for red flag words
-- could use chunking for redflag keyword thing to ensure overlap
-- optimise chunk size for red flag
-- add new redirect logic
-- could lowk use ai to extract links too (chain1) ???? then chain it to call the url (chain2) then output the response then do the response summariser (chain3)!!!!!!!!!
-- integrate diff llms & fallback llm
-- retry logic & fallback llm
-- FAISS / Chroma for document embedding + retrieval.
-- Document it! Show architecture diagrams and example queries in README.
-
-
-This gives a direct showcase of embeddings, chains, and LLM integration.
-🧠 Stack You Could Use
-- LangChain for building pipelines or agents.
-- OpenAI or Claude for reasoning and summarization.
-- FAISS / Chroma for document embedding + retrieval.
-- Streamlit or Flask for showing a working demo.
-
-✅ Tips for Impressiveness
-- Use prompt templates and show prompt engineering skill.
-- Add retry logic, fallback models, and tool use (e.g. metadata extractor).
-- Document it! Show architecture diagrams and example queries in README.
-
-## Oisins learning
-1. used a gitignore for the first time to hide stuff from the version control
-2. Python - don't have much experience at all with language but learnt how to write a simple script with it
-3. Md- this is my first time writing/using markdown
-4. Csv - learnt how to create csv files
-5. Using clean input validation when adding arguments to the parser
-- cron jobs:
-
-## Nicoles learnings
-1. to force a 404 return - go to an existing website then to a path that doesnt exist eg google.com/404
-2. How to do strike through on md file
-3. Specify utf-8 encoding to ensures python reads the file using the correct translation for the bytes inside the file. This ensures we get the actual characters we expect.
-4. regular expressions - mentioned in comment
-5. extend metod add elements from another list or iterable to an array (like i did iterating through a file)
-6. A set is a collection of unique items which doesnt have duplicates, is unordered, is fast to check if an item exists. I used a set for the found urls to filter out duplicates to make sure each url is only checked once
-7. ```response = requests.head(url, allow_redirects=True, timeout=5)``` 
-A HEAD request is like a GET but it only asks for headers not full content (all thats neccesary to check status code). allowing redirects follows redirects in case page has moved to new location. Add a timeout to wait before giving up.
-8. if method doesnt use class variables make it static and call it like ClassName.methodName
-9. If you create a branch from main then merge something else into main, your brch doesnt automatically get those changes but if you do  git merge main that merges mains changes into your branch then creates commit so you need to push this commit to your repo
-10. Different error codes and their meanings
-11. Its important to check redirects because:
-    - shortened links often redirect to final destination and when validating links its imoprtant to store final url
-    - seo/content content audits (link may have permanantely moved and lots of redirects is bad for seo)
-    - security because it could be redirecting to suspicious pages
-12. ```parsed = urlparse(url.strip())``` strip() removes whitespace and urlparse() seperates it into url parts
-13. the fragment is the part after the '#' in a url which points to a specific part of th page
-14. ```urlunparse(stripped).rstrip('/')``` rebuild url after cleaning
-15. https://google.com redirects to https://www.google.com
-16. redirect history will be empty if theres no redirects
-17. Including style is recommended because:
-    - It lets you control the tone, complexity, and format of the explanation (e.g., plain English, professional, technical, friendly).
-    - It makes your prompt more flexible for different audiences or use cases.
-    - You can easily change or experiment with how the LLM responds without rewriting your template.
-16. Using langchain llm wrappers, prompt template, format instructions, parsing, memory, chains
+This project demonstrates:
+- How AI can augment traditional automation tasks
+- Practical use of LangChain + LLMs in real-world validation tools
+- A solid foundation for both technical learning and demo purposes
