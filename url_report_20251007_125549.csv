@@ -1,0 +1,21 @@
+original_url,usable,reason,resolution_steps,status_code,response_url
+https://calendar.google.com/calendar,False,"The link redirects to a sign-in page, indicating that the content is behind a login wall and not directly accessible to end users.",,200,https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fcalendar.google.com%2Fcalendar%2Fu%2F0%2Fr&dsh=S470675757%3A1759837826244887&emr=1&followup=https%3A%2F%2Fcalendar.google.com%2Fcalendar%2Fu%2F0%2Fr&ifkv=AfYwgwU-XeQfQ-1I-JV5j5HmlxYs_aHdCszcvn7j61O3GFH-WQ48_gWJtZM9hM3YcoD94zXJRfG2xQ&osid=1&passive=1209600&service=cl&flowName=WebLiteSignIn&flowEntry=ServiceLogin
+https://calendar.google.com/calendar/u/0/404,False,The link leads to a 404 error page with placeholder text and signals indicating it is not found.,,404,https://calendar.google.com/calendar/u/0/404
+https://example.com/page?query=2,False,The page returned a 404 status code with 'Not Found' reason. The content snippet is a full HTML page indicating the page is not available.,,404,https://example.com/page?query=2
+https://github.com,True,"The link is acceptable for end users as the response_url is correct, status_code is 200, and the content snippet shows a valid webpage with content.",,200,https://github.com/
+https://google.com,True,The link is acceptable for end users as it redirects to https://www.google.com/ which is a functioning page with content.,,200,https://www.google.com/
+https://google.com/404,False,The link leads to a 404 error page with placeholder text and signals indicating it is not found.,,404,https://google.com/404
+https://translate.google.com,False,"The link redirects to a consent page instead of the intended translation page, which may confuse or deter end users.",,200,https://consent.google.com/ml?continue=https://translate.google.com/&gl=IE&hl=en-US&cm=2&pc=t&src=1&escs=AZj2P8h4GRqqTeEqcLoKLSTgI7SF9qdf1GbzBaucgDc5QTiB0VMbltoyjkQRQvj00QJh0x9qHeJQAb9mcF6FNZ6rsVlKy1LhgusH
+https://translate.google.com/%20404,False,The link leads to a 404 error page with placeholder text and 'Error 404 (Not Found)' title.,,404,https://translate.google.com/%20404
+https://translate.google.com/404,False,The link leads to a 404 error page with placeholder text and signals indicating it is not found.,,404,https://translate.google.com/404
+https://www.example.com/404,False,"The link leads to a 404 error page with 'Example Domain' content snippet, indicating it is not a valid page for end users.",,404,https://www.example.com/404
+https://www.github.com/thispagedoesnotexist,False,"The link leads to a 404 error page with 'Not Found' content snippet, indicating the page is not reachable.",,404,https://github.com/thispagedoesnotexist
+https://www.google.com,True,"The link is acceptable for end users as the response_url is correct, status_code is 200, and the content snippet shows the expected Google homepage.",,200,https://www.google.com/
+https://www.google.com/404,False,"The link leads to a 404 error page with placeholder text, indicating the content is not available.",,404,https://www.google.com/404
+https://www.google.com/search,False,"The link redirects to a different page (https://www.google.com/webhp) than the original URL (https://www.google.com/search), which may not be the intended destination for end users.",,200,https://www.google.com/webhp
+https://www.nonexistentwebsite12345.com,False,The link is not usable as there was no response from the server.,,,
+https://www.openai.com,False,The link is not usable as the status code is 403 (Forbidden) and the content snippet suggests a placeholder page.,,403,https://www.openai.com/
+https://www.python.org,True,"The link is acceptable for end users as the response_url is correct, status_code is 200, and the content snippet shows a valid HTML structure.",,200,https://www.python.org/
+https://www.wikipedia.org,True,The link is acceptable for end users as it leads to the Wikipedia homepage with relevant content.,,200,https://www.wikipedia.org/
+https://www.youtube.com,True,"The link is acceptable for end users as the response_url is correct, status_code is 200, and the content snippet shows the expected content of a YouTube homepage.",,200,https://www.youtube.com/
+https://www.youtube.com/404,False,"The link leads to a 404 page with 'Not Found' content snippet, indicating it is not user-friendly.",,404,https://www.youtube.com/404
