@@ -34,15 +34,23 @@ It’s both a **learning exercise** and a **showcase project**, demonstrating:
 - Retry logic using exponential backoff and clean URL normalization
 - Modular design: each module (reader, HTTP client, analyzer, reporter) has a single responsibility
 
-🚀 How to Run
-# 1. Create a virtual environment
+## How to Run
+
+1. Create a virtual environment
+```bash
 python -m venv venv
-# 2. Activate it
+```
+2. Activate it
+```bash
 venv\Scripts\activate      # (Windows)
 source venv/bin/activate   # (Mac/Linux)
-# 3. Install dependencies
+```
+3. Install dependencies
+```bash
 pip install -r requirements.txt
-# 4. Run the app
+```
+4. Run the app
+```bash
 python run.py -i documents
 
 CLI Options
@@ -50,9 +58,10 @@ usage: run.py [-h] -i INPUT
 options:
   -h, --help            Show help message
   -i INPUT, --input     Directory or file path containing documents
+```
 
 ## Architecture Overview
-
+```
 link_checker/
 │
 ├── main.py            # Orchestrates the flow
@@ -61,6 +70,7 @@ link_checker/
 ├── analyser.py        # Uses LangChain + LLM for AI validation
 ├── reporter.py        # Exports results to CSV
 └── utils/             # Helper functions (normalization, logging, etc.)
+```
 
 ## Example Output
 ![Example csv  - need to fix resolution steps here](images/ss1_need_to_fix_resolution.png)
